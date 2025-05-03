@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+    scroll-behavior: smooth
+}
+@layer components {
+    .button-primary-sm {
+        @apply bg-primary text-white font-medium px-3 py-1 rounded-lg font-poppins cursor-pointer;
+    }
+
+    .button-accent-sm {
+        @apply bg-accent text-primary font-medium px-3 py-1 rounded-lg font-poppins cursor-pointer;
+    }
+
+    .button-primary-2xl {
+        @apply bg-primary text-white font-medium px-3 py-2 rounded-lg font-poppins cursor-pointer text-center w-2/5;
+    }
+
+    .button-accent-2xl {
+        @apply bg-accent text-primary font-medium px-3 py-2 rounded-lg font-poppins cursor-pointer text-center w-2/5;
+    }
+}

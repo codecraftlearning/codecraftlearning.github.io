@@ -1,0 +1,15 @@
+<div class="flex flex-row justify-end bg-primary w-full h-12 items-center gap-6 p-5">
+    @for (link of navItems; track link.name) {
+        <a *ngIf="link.type === 'link'" [routerLink]="link.path" [fragment]="link.fragment" routerLinkActive="underline "
+            class="text-white px-4 py-2 text-sm cursor-pointer font-poppins underline-offset-4 ">
+            {{ link.name }}
+        </a>
+        <a *ngIf="link.type === 'fragment'" (click)="scrollTo(link.fragment ?? '')" routerLinkActive="underline "
+            class="text-white px-4 py-2 text-sm cursor-pointer font-poppins underline-offset-4 ">
+            {{ link.name }}
+        </a>
+        <button *ngIf="link.type === 'button'" class="button-accent-sm">
+            {{ link.name }}
+        </button>
+    }
+</div>

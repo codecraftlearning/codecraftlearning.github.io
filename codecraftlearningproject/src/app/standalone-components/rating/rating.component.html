@@ -1,0 +1,6 @@
+<div class="flex flex-row gap-1 justify-start p-0 m-0 w-max" *ngIf="ratingArray.length > 0">
+    <img *ngFor="let rate of ratingArray" src="assets/images/star.svg" srcset="" 
+        class="w-3 h-3 filter" 
+        class="{{rate ? 'invert sepia saturate-500 hue-rotate-180' : ''}}" 
+    />
+</div>
