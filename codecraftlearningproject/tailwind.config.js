@@ -11,7 +11,11 @@ module.exports = {
         accent: '#FFB84C',
         highlight: '#ACFF6C',
         background: '#FFFFFF',
-        text: '#333333'
+        text: '#333333',
+        info: '#F3FCFF',
+        warnLight: '#FFD7D7',
+        opportunityLight: '#FFEE91',
+        opportunityDark: '#FFD700',
       },
       width: {
         '75vw': '75vw',

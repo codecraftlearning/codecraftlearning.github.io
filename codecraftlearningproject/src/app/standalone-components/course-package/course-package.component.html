@@ -1,0 +1,46 @@
+<div class="flex flex-col p-5 border rounded-lg border-primary w-full h-full justify-center gap-4">
+    <span
+        class="text-primary text-2xl font-outfit underline underline-offset-2 text-center">{{coursePackage.title}}
+    </span>
+    <div class="flex flex-col mt-4">
+        <div *ngFor="let techRow of techs" class="grid gap-2 w-full py-2 mb-2"
+            [ngClass]="{'grid-cols-1': techRow.length === 1, 'grid-cols-2': techRow.length === 2}">
+            <div *ngFor="let techItem of techRow"
+                class="flex flex-col justify-between items-center text-center align-center bg-secondary">
+                <div class="flex flex-row w-full justify-evenly h-fit  gap-1">
+                    <ng-container *ngFor="let icon of getIconUrl(techItem)">
+                        <img *ngIf="icon.length" [src]="icon" alt="{{getName(techItem)}}"
+                            class="h-10 w-10 object-cover overflow-clip icon-position">
+                    </ng-container>
+                </div>
+                <div class="text-text font-poppins mt-3 py-5" [class]="getTextStyle(techItem)">{{getName(techItem)}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="flex flex-col w-full justify-center">
+        <div
+            class="flex flex-row rounded-lg p-3  justify-center gap-2 relative"
+            [ngClass]="coursePackage.discountPrice !== coursePackage.regularPrice ? 'bg-warnLight' : 'border bg-info'">
+            <span class="font-outfit text-primary text-lg p-0">{{coursePackage.durationInMonth}}&nbsp;Months</span>
+            <span class="font-outfit text-black text-xl p-0 font-semibold">X</span>
+            <span class="font-outfit text-primary text-lg p-0">&#8377;{{coursePackage.regularPrice}}<span
+                class="text-sm">/month</span></span>
+            <div class="absolute inset-0 flex items-center justify-center" *ngIf="coursePackage.discountPrice !== coursePackage.regularPrice">
+            <div class="w-48 h-0.5 bg-primary -rotate-12" *ngIf="coursePackage.discountPrice !== coursePackage.regularPrice"></div>
+            </div>
+        </div>
+        <div
+            *ngIf="coursePackage.discountPrice !== coursePackage.regularPrice"
+            class="flex flex-row rounded-lg border-4 border-opportunityDark  w-full p-3 bg-opportunityLight justify-center  gap-2 mt-2">
+            <span class="font-outfit text-primary text-lg p-0">{{coursePackage.durationInMonth}}&nbsp;Months</span>
+            <span class="font-outfit text-black text-xl p-0 font-semibold">X</span>
+            <span class="font-outfit text-primary text-lg p-0">&#8377;{{coursePackage.discountPrice}}<span
+                    class="text-sm">/month</span></span>
+        </div>
+    </div>
+    <div class="flex flex-row justify-center w-full">
+        <button class="button-accent-2xl w-full">Select</button>
+    </div>
+</div>

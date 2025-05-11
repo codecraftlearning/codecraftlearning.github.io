@@ -5,6 +5,14 @@ html {
     scroll-behavior: smooth
 }
 @layer components {
+    .button-primary-xs {
+        @apply bg-primary text-white font-normal  text-sm px-5 py-1 rounded-lg font-poppins cursor-pointer;
+    }
+
+    .button-accent-xs {
+        @apply bg-accent text-primary font-normal  text-sm px-5 py-1 rounded-lg font-poppins cursor-pointer;
+    }
+
     .button-primary-sm {
         @apply bg-primary text-white font-medium px-3 py-1 rounded-lg font-poppins cursor-pointer;
     }

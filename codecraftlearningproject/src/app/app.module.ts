@@ -22,6 +22,7 @@ import { HomeComponent } from './page/home/home.component';
 import { CoursesComponent } from './page/courses/courses.component';
 import { TestimonialsComponent } from './page/testimonials/testimonials.component';
 import { CertificationsComponent } from './page/certifications/certifications.component';
+import { CoursePackageComponent } from "./standalone-components/course-package/course-package.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbfNfncyea0XyhKQkmzURjXHIkDVC1HbA",
@@ -59,7 +60,8 @@ export const standaloneComponents = [
     AngularFireAuthModule,
     standaloneComponents,
     CertificateComponent,
-    CertificateSectionComponent
+    CertificateSectionComponent,
+    CoursePackageComponent
 ],
   providers: [
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

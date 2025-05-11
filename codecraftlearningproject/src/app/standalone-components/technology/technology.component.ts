@@ -14,7 +14,7 @@ export class TechnologyComponent {
       'assets/tech-images/angular.png',
       'assets/tech-images/cicd.png',
       'assets/tech-images/css.png',
-      'assets/tech-images/desgin-pattern.png',
+      'assets/tech-images/design-pattern.png',
       'assets/tech-images/docker.png',
       'assets/tech-images/express.png'
     ],

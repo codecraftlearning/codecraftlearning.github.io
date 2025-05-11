@@ -1,1 +1,14 @@
-<p>courses works!</p>
+<div class="flex flex-col gap-9">
+    <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row justify-start gap-2">
+            <span class="text-text font-outfit text-lg underline underline-offset-2">Pick from our predefined packages or</span>
+            <button class="button-accent-xs">Create your own package</button>
+        </div>
+        <span class="text-text font-poppins text-xs">Don't worry, payment details are not required for this step</span>
+    </div>
+    <div class="grid grid-cols-3 gap-4 ">
+        <div *ngFor="let package of coursePackages" class="flex justify-center w-full">
+            <app-course-package [coursePackage]="package" class="w-full"></app-course-package>
+        </div>
+    </div>
+</div>

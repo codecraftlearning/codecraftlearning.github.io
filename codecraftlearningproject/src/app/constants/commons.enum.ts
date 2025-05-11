@@ -16,7 +16,8 @@ export enum Sizes {
 }
 
 export enum FirebaseCollections {
-    students = 'students'
+    students = 'students',
+    coursePackages = 'coursePackages',
 }
 
 export enum Gender {

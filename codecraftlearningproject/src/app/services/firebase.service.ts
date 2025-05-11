@@ -13,10 +13,10 @@ export class FirebaseService {
 
    
     public async saveNewData(collectionName: FirebaseCollections, data: any): Promise<any> {
-        const snapshot = await lastValueFrom(this.firestore.collection(collectionName).get());
-        if (snapshot.empty) {
-            console.log("No matching documents.");
-        }
+        // const snapshot = await lastValueFrom(this.firestore.collection(collectionName).get());
+        // if (snapshot.empty) {
+        //     console.log("No matching documents.");
+        // }
         return this.firestore.collection(collectionName).add(data).then(() => {
             return data;
         }).catch((error) => {
