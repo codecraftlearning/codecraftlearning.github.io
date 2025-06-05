@@ -1,8 +1,10 @@
 export interface Rating {
+    studentId: string,
+    emailId: string,
     name: string;
     courseTitle: string;
     rating: 0 | 1 | 2 | 3 | 4 | 5;
-    review: string;
+    message: string;
     date: Date;
-    image: string;
+    gender: 'Male' | 'Female' | 'Other';
 }

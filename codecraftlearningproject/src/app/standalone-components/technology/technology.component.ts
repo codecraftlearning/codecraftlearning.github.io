@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-technology',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './technology.component.html',
   styleUrl: './technology.component.scss'
 })

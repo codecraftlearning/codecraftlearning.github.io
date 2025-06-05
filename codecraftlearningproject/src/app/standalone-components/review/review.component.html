@@ -1,18 +1,13 @@
-<div class="flex flex-col w-full gap-9">
+<div class="flex flex-col w-full gap-9" *ngIf="reviews && reviews.length > 0">
     <div class="flex flex-col text-center bg-secondary w-full py-2">
         <span class="font-outfit text-2xl text-primary">Real Stories from Real Coders</span>
     </div>
     <div class="flex flex-col gap-4">
-        <div class="flex flex-row justify-center gap-4">
-            <app-review-card></app-review-card>
-            <app-review-card></app-review-card>
-        </div>
-        <div class="flex flex-row justify-center gap-4">
-            <app-review-card></app-review-card>
-            <app-review-card></app-review-card>
+        <div class="grid grid-cols-2 grid-rows-2 gap-4">
+            <app-review-card *ngFor="let review of reviews" size="sm" [review]="review"></app-review-card>
         </div>
     </div>
     <div class="flex flex-row justify-center w-full">
-        <button class="button-primary-2xl">Checkout more reviews</button>
+        <a class="button-primary-2xl" routerLink="/pages/testimonials">Checkout more reviews</a>
     </div>
 </div>

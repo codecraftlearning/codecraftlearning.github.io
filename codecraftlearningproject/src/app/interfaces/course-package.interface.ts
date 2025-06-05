@@ -1,6 +1,6 @@
 export interface CoursePackageTechnology {
-    name: string | string[];
-    iconUrl: string | string[];
+    name: string[];
+    iconUrl: string[];
     isPackage: boolean;
     combinationBy: '+' | '/' | '';
 }
@@ -13,5 +13,6 @@ export interface CoursePackage {
     regularPrice: number;
     discountPrice: number;
     durationInMonth: number;
-    technologies: CoursePackageTechnology[]
+    technologies?: CoursePackageTechnology[];
+    allTechItems: string[];
 }

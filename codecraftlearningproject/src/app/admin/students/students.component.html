@@ -1,0 +1,50 @@
+<div class="flex flex-col gap-6 absolute left-0 px-10  w-full">
+    <div class="flex flex-row w-full justify-center border border-primary rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
+            <caption
+                class="text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 p-4 text-left rounded-lg ">
+                <div class="flex flex-row gap-6 align-middle h-10">
+                    <span>Student List</span>
+                    <button class="button-primary-sm" (click)="createStudentModal = true">+ Create Student</button>
+                </div>
+
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="table-row">
+                    <th scope="col" class="px-6 py-3 text-primary">Id</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Age</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Gender</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Email</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Phone</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Course Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Batch Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Course Status</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Certification Status</th>
+                    <th scope="col" class="px-6 py-3 text-primary"></th>
+                </tr>
+            </thead>
+            <tbody class="">
+                <ng-container *ngFor="let student of allStudents; let i=index">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-text">
+                        <td class="px-6 py-4">{{student.id}}</td>
+                        <td class="px-6 py-4">{{student.name}}</td>
+                        <td class="px-6 py-4">{{student.age}}</td>
+                        <td class="px-6 py-4">{{student.gender}}</td>
+                        <td class="px-6 py-4">{{student.contact.email}}</td>
+                        <td class="px-6 py-4">{{student.contact.phone}}</td>
+                        <td class="px-6 py-4">{{student.course.name}}</td>
+                        <td class="px-6 py-4">{{student.course.batchName}}</td>
+                        <td class="px-6 py-4">{{student.course.status}}</td>
+                        <td class="px-6 py-4">{{student.course.certification?.certificationStatus}}</td>
+                        <td class="px-6 py-4 text-center">
+                            <a class="text-blue underline underline-offset-2 cursor-pointer" (click)="openStudent(student)">View</a>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+<app-create-student-modal [isOpen]="createStudentModal" [SelectedStudent]="selectedStudent"
+    (onClose)="closeStudentModal()"></app-create-student-modal>

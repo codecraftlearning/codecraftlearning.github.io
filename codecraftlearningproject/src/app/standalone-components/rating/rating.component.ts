@@ -11,7 +11,7 @@ import { Rating } from '../../interfaces/rating.interface';
 })
 export class RatingComponent implements OnInit {
   @Input()
-  public ratingData: Rating | undefined;
+  public rating?: number;
   public maxRating = 5;
   public ratingArray: boolean[] = [];
 
@@ -20,8 +20,8 @@ export class RatingComponent implements OnInit {
   }
 
   private createRatingArray(): void {
-    if (this.ratingData) {
-      this.ratingArray = Array.from({ length: this.maxRating }, (_, index) => index >= (this.ratingData as Rating)?.rating).reverse();
+    if (this.rating) {
+      this.ratingArray = Array.from({ length: this.maxRating }, (_, index) => index >= (this.rating ?? 0)).reverse();
     }
   }
 }

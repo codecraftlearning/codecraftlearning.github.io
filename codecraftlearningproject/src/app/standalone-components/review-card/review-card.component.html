@@ -1,20 +1,41 @@
 <ng-container *ngIf="size === 'sm'">
-    <div class="w-fit flex flex-row justify-between items-center h-fit px-9 py-7 bg-secondary rounded-lg gap-4">
-        <img src="./../../../assets/images/girl.jpg" alt="boy image" class="w-24 h-24 rounded-full object-cover" />
+    <div class="w-fit flex flex-row justify-between items-center h-fit px-9 py-7 bg-secondary rounded-lg gap-4" *ngIf="review">
+        <img src="./../../../assets/images/girl.jpg" alt="girl image" class="w-24 h-24 rounded-full object-cover" *ngIf="review.gender === 'Female'"/>
+        <img src="./../../../assets/images/boy.png" alt="boy image" class="w-24 h-24 rounded-full object-cover" *ngIf="review.gender !== 'Female'" />
         <div class="flex flex-col">
             <div class="flex flex-row justify-between ">
                 <span class="text-base text-primary font-poppins underline underline-offset-2">
-                    Sonal Priya
+                    {{review.name}}
                 </span>
-                <app-rating size="sm"></app-rating>
+                <app-rating size="sm" [rating]="review.rating"></app-rating>
             </div>
             <div class="flex flex-row justify-start">
                 <span class="text-sm text-text font-poppins">
-                    Java Full Stack Developer
+                     {{review.courseTitle}}
                 </span>
             </div>
             <p class="text-base text-start w-72 text-text font-poppins mt-4">
-                Learning here was the best experience of I have ever got
+                {{review.message}}
+            </p>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="size === 'lg'">
+    <div class="w-full flex flex-row justify-start items-center h-fit px-9 py-7 bg-secondary rounded-lg gap-6" *ngIf="review">
+        <img src="./../../../assets/images/girl.jpg" alt="girl image" class="w-24 h-24 rounded-full object-cover" *ngIf="review.gender === 'Female'"/>
+        <img src="./../../../assets/images/boy.png" alt="boy image" class="w-24 h-24 rounded-full object-cover" *ngIf="review.gender !== 'Female'" />
+        <div class="flex flex-col gap-2 grow-3 h-full">
+            <span class="text-base text-primary font-poppins underline underline-offset-2">
+                {{review.name}}
+            </span>
+            <span class="text-sm font-bold text-text font-poppins min-w-52">
+                {{review.courseTitle}}
+            </span>
+            <app-rating size="sm" [rating]="review.rating"></app-rating>
+        </div>
+        <div class="w-full bg-white grow-1 px-8 py-4 rounded-lg h-full max-h-52 overflow-y-auto">
+            <p class="text-base text-start text-text font-poppins ">
+                {{review.message}}
             </p>
         </div>
     </div>

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RatingComponent } from '../rating/rating.component';
 import { CommonModule } from '@angular/common';
+import { Rating } from '../../interfaces/rating.interface';
 
 @Component({
   selector: 'app-review-card',
@@ -11,6 +12,9 @@ import { CommonModule } from '@angular/common';
 })
 export class ReviewCardComponent {
 
+  @Input()
+  public review?: Rating;
+  
   @Input()
   public size: 'sm' | 'lg' = 'sm';
 }

@@ -1,0 +1,266 @@
+<div class="modal" tabindex="-1" role="dialog" *ngIf="isOpen">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="flex flex-row gap-2 items-center">
+                    <h5 class="modal-title" *ngIf="!isEditMode">Create Student</h5>
+                    <h5 class="modal-title" *ngIf="isEditMode">Update Student - {{studentForm.get('id')?.value}}</h5>
+                    <button class="button-accent-sm" *ngIf="isReadyToCertify" (click)="certifyStudent()">Verified and
+                        Certify</button>
+                </div>
+                <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form [formGroup]="studentForm">
+                <div class="modal-body" [class.hidden]="creatingStudent">
+                    <div class="grid grid-cols-3 gap-8">
+
+                        <div class="form-group">
+                            <label>Full Name*</label>
+                            <input class="form-control" formControlName="name" />
+                            <div *ngIf="studentForm.get('name')?.invalid && studentForm.get('name')?.touched"
+                                class="text-red-500">
+                                Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Age*</label>
+                            <input type="number" class="form-control" formControlName="age" />
+                            <div *ngIf="studentForm.get('age')?.invalid && studentForm.get('age')?.touched"
+                                class="text-red-500">
+                                Valid age is required.
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Gender*</label>
+                            <select class="form-control" formControlName="gender">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div *ngIf="studentForm.get('gender')?.invalid && studentForm.get('gender')?.touched"
+                                class="text-red-500">
+                                Gender is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="contact">
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="form-group">
+                                <label>Email*</label>
+                                <input class="form-control" formControlName="email" />
+                                <div *ngIf="studentForm.get('contact.email')?.invalid && studentForm.get('contact.email')?.touched"
+                                    class="text-red-500">">
+                                    Valid email is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone*</label>
+                                <input class="form-control" formControlName="phone" />
+                                <div *ngIf="studentForm.get('contact.phone')?.invalid && studentForm.get('contact.phone')?.touched"
+                                    class="text-red-500">">
+                                    Phone is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Alternate Phone</label>
+                                <input class="form-control" formControlName="alternatePhone" />
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="address">
+                        <div class="grid grid-cols-5 gap-8">
+
+                            <div class="form-group">
+                                <label>Street*</label>
+                                <input class="form-control" formControlName="street" />
+                                <div *ngIf="studentForm.get('address.street')?.invalid && studentForm.get('address.street')?.touched"
+                                    class="text-red-500">">
+                                    Street is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>City*</label>
+                                <input class="form-control" formControlName="city" />
+                                <div *ngIf="studentForm.get('address.city')?.invalid && studentForm.get('address.city')?.touched"
+                                    class="text-red-500">">
+                                    City is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>State*</label>
+                                <input class="form-control" formControlName="state" />
+                                <div *ngIf="studentForm.get('address.state')?.invalid && studentForm.get('address.state')?.touched"
+                                    class="text-red-500">">
+                                    State is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Zip*</label>
+                                <input class="form-control" formControlName="zip" />
+                                <div *ngIf="studentForm.get('address.zip')?.invalid && studentForm.get('address.zip')?.touched"
+                                    class="text-red-500">">
+                                    Valid zip is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Country*</label>
+                                <input class="form-control" formControlName="country" />
+                                <div *ngIf="studentForm.get('address.country')?.invalid && studentForm.get('address.country')?.touched"
+                                    class="text-red-500">">
+                                    Country is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div formArrayName="course" [class.pointer-events-none]="isCertified">
+                        <div *ngFor="let course of courses.controls; let i = index" [formGroupName]="i"
+                            class="border p-2 mb-2">
+                            <div class="flex flex-row gap-4 align-middle" *ngIf="!isEditMode">
+                                <h6 class="mb-2 text-text underline underline-offset-2">Course {{ i + 1 }}</h6>
+                                <button type="button" class="mt-2 bg-red-300 px-4 rounded-lg"
+                                    (click)="courses.removeAt(i)"> - Remove Course</button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-8">
+                                <div class="form-group">
+                                    <label>Batch name</label>
+                                    <input class="form-control" formControlName="batchName" />
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-8">
+                                <div class="form-group">
+                                    <label>Course Name*</label>
+                                    <select class="form-control" formControlName="name">
+                                        <option *ngFor="let course of courseList" [value]="course.title">{{ course.title
+                                            }}</option>
+                                    </select>
+                                    <div *ngIf="course.get('name')?.invalid && course.get('name')?.touched"
+                                        class="text-red-500">
+                                        Course name is required.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Default Duration*</label>
+                                    <input class="form-control" formControlName="defaultDuration" />
+                                    <div *ngIf="course.get('defaultDuration')?.invalid && course.get('defaultDuration')?.touched"
+                                        class="text-red-500">
+                                        Duration is required.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Technology*</label>
+                                    <input class="form-control" formControlName="technology" />
+                                    <div *ngIf="course.get('technology')?.invalid && course.get('technology')?.touched"
+                                        class="text-red-500">
+                                        Technology is required.
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Monthly Price*</label>
+                                    <input type="number" class="form-control" formControlName="price" />
+                                    <div *ngIf="course.get('price')?.invalid && course.get('price')?.touched"
+                                        class="text-red-500">
+                                        Monthly Price is required.
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="grid grid-cols-4 gap-8">
+                                <div class="form-group">
+                                    <label>Enrollment Date*</label>
+                                    <input type="date" class="form-control" formControlName="enrollmentDate" />
+                                    <div *ngIf="course.get('enrollmentDate')?.invalid && course.get('enrollmentDate')?.touched"
+                                        class="text-red-500">
+                                        Enrollment Date is required.
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Completion Date</label>
+                                    <input type="date" class="form-control" formControlName="completionDate" />
+                                    <div *ngIf="course.get('completionDate')?.errors?.['completionBeforeEnrollment'] && course.get('completionDate')?.touched"
+                                        class="text-red-500">
+                                        Completion Date cannot be before Enrollment Date.
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Instructor*</label>
+                                    <input class="form-control" formControlName="instructor" />
+                                    <div *ngIf="course.get('instructor')?.invalid && course.get('instructor')?.touched"
+                                        class="text-red-500">
+                                        instructor name is required.
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status*</label>
+                                    <input class="bg-slate-300 form-control" [value]="course.get('status')?.value"
+                                        readonly />
+                                    <div *ngIf="course.get('status')?.invalid && course.get('status')?.touched"
+                                        class="text-red-500">
+                                        Course current status is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div formGroupName="certification">
+                                <div class="grid grid-cols-4 gap-8">
+                                    <div class="form-group">
+                                        <label>Certification Type</label>
+                                        <select class="form-control" formControlName="certificationType">
+                                            <option *ngFor="let type of certificationTypeList" [value]="type">{{ type }}
+                                            </option>
+                                        </select>
+
+                                        <div *ngIf="course.get('certification.certificationType')?.invalid"
+                                            class="text-red-500">
+                                            Certification type is required.
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Certification Status*</label>
+                                        <input class="bg-slate-300 form-control"
+                                            [value]="course.get('certification.certificationStatus')?.value" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Certification Date</label>
+                                        <input class="bg-slate-300 form-control"
+                                            [value]="course.get('certification.certificationDate')?.value" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Certificate ID</label>
+                                        <input class="bg-slate-300 form-control"
+                                            [value]="course.get('certification.certificateId')?.value" readonly />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button *ngIf="!isEditMode" type="button" class="button-primary-sm" (click)="addCourse()">+ Add
+                            Course</button>
+                    </div>
+                </div>
+                <app-loader [loading]="creatingStudent"></app-loader>
+                <div class="modal-footer" [class.disabled]="creatingStudent">
+                    <ng-container *ngIf="!isCertified">
+                        <button *ngIf="!isEditMode" class="button-accent-sm" (click)="onSubmit()">Create</button>
+                        <button *ngIf="isEditMode" class="button-accent-sm" (click)="updateStudent()">Update
+                            Student</button>
+                    </ng-container>
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

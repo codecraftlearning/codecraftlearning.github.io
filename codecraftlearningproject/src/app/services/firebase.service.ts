@@ -2,31 +2,34 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { lastValueFrom, Observable } from 'rxjs';
 import { FirebaseCollections } from '../constants/commons.enum';
+import { collection, collectionData, doc, getDocs, limit, orderBy, query, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FirebaseService {
+    
     constructor(
         public firestore: AngularFirestore,
     ) {}
 
    
-    public async saveNewData(collectionName: FirebaseCollections, data: any): Promise<any> {
-        // const snapshot = await lastValueFrom(this.firestore.collection(collectionName).get());
-        // if (snapshot.empty) {
-        //     console.log("No matching documents.");
-        // }
-        return this.firestore.collection(collectionName).add(data).then(() => {
-            return data;
-        }).catch((error) => {
-            console.error("Error adding document: ", error);
-            throw error;
-        });
+    public async saveNewData(collectionName: FirebaseCollections, data: any, id?: string): Promise<any> {
+        const ref = doc(this.firestore.firestore, collectionName, id || this.firestore.createId());
+        return setDoc(ref, { ...data, id: ref.id }, { merge: true });
     }
 
-    public getAllFromCollection(collectionName: FirebaseCollections): Observable<any[]> {
-        return this.firestore.collection(collectionName).valueChanges();
+    public getAllFromCollection(collectionName: FirebaseCollections, idFieldName?: string): Observable<any[]> {
+        const ref = collection(this.firestore.firestore, collectionName);
+        if (!idFieldName) {
+            return collectionData(ref);
+        }
+        return collectionData(query(ref, orderBy(idFieldName)), { idField: 'id' });
+    }
+
+    public getAllFromCollectionWithMaxItems(collectionName: FirebaseCollections, maxItems: number): Observable<any[]> {
+        const q = query(collection(this.firestore.firestore, collectionName), limit(maxItems));
+        return collectionData(q, { idField: 'id' })
     }
 
     public getFromCollectionById(collectionName: FirebaseCollections, id: string): Observable<any> {
@@ -49,5 +52,9 @@ export class FirebaseService {
             console.error("Error deleting document: ", error);
             throw error;
         });
+    }
+
+    public generateId(): string {
+      return this.firestore.createId();
     }
 }
