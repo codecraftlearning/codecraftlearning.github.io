@@ -17,4 +17,11 @@ export class ReviewCardComponent {
   
   @Input()
   public size: 'sm' | 'lg' = 'sm';
+
+  public getClipMessage(message: string): string {
+    if (message.length >= 50) {
+      return message.substring(0, 50).concat(' ... ');
+    }
+    return message
+  }
 }

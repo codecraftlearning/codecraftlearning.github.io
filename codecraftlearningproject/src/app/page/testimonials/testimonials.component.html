@@ -1,8 +1,8 @@
-<div class="flex flex-col w-full gap-4">
+<div class="flex flex-col w-full gap-4 sm:-mt-12 xs:-mt-12">
     <app-loader [loading]="pageLoading"></app-loader>
     <ng-container *ngIf="!pageLoading">
 
-        <div class="flex flex-row justify-between">
+        <div class="flex sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between">
             <div class="flex flex-col w-full gap-1">
                 <h2 class="text-xl font-semibold  text-primary underline underline-offset-2 font-outfit">There is
                     nothing
@@ -24,7 +24,7 @@
         </ng-template>
 
         <div *ngIf="addReview"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm w-screen h-screen">
             <div class="relative bg-secondary rounded-lg shadow-lg p-6 min-w-[400px] w-full max-w-2xl">
                 <div
                     class="flex flex-row justify-between w-full bg-primary py-3 px-5 text-white rounded-lg align-middle">

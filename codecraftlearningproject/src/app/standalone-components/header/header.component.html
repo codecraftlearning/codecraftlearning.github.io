@@ -1,7 +1,10 @@
-<div class="flex flex-col gap-4 bg-white">
-    <div class="flex flex-row justify-start gap-3 w-full items-center">
-        <img src="./../../../assets/images/2L1.png" alt="Logo" class="w-14 h-auto" />
-        <span class="font-outfit font-semibold text-primary text-5xl drop-shadow-md">Code Craft Learning</span>
+<div class="flex flex-col gap-4 bg-white w-full justify-start">
+    <div class="flex flex-row items-center justify-between">
+        <div class="flex flex-row gap-3">
+            <img src="./../../../assets/images/2L1.png" alt="Logo" class="w-14 xs:w-7 h-auto" />
+            <span class="font-outfit font-semibold text-primary text-5xl xs:text-xl drop-shadow-md">Code Craft Learning</span>
+        </div>
+        <app-nav-bar [isFlex]="false"></app-nav-bar>
     </div>
     <app-nav-bar></app-nav-bar>
 </div>

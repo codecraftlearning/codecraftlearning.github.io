@@ -24,7 +24,10 @@ module.exports = {
       fontFamily:{
         outfit: ['Outfit', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif']
-      }
+      },
+      screens: {
+        'xs': '350px', // custom breakpoint named 'xs'
+      },
     },
   },
   plugins: [],

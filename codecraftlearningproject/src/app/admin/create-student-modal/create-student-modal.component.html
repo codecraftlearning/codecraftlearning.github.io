@@ -132,6 +132,14 @@
                                     <label>Batch name</label>
                                     <input class="form-control" formControlName="batchName" />
                                 </div>
+                                <div class="form-group" *ngIf="course.get('name')?.value === 'CUSTOM'">
+                                    <label>Custom Course Name</label>
+                                    <input class="form-control" formControlName="customName" />
+                                    <div *ngIf="course.get('customName')?.invalid && course.get('customName')?.touched"
+                                        class="text-red-500">
+                                        Custom Course Name is required.
+                                    </div>
+                                </div>
                             </div>
                             <div class="grid grid-cols-4 gap-8">
                                 <div class="form-group">
@@ -258,7 +266,7 @@
                             Student</button>
                     </ng-container>
                     <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                    
+
                 </div>
             </form>
         </div>

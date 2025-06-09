@@ -17,6 +17,7 @@ import { ReviewComponent } from '../standalone-components/review/review.componen
 import { TechnologyComponent } from '../standalone-components/technology/technology.component';
 import { PageRoutingModule } from './page-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TimestampPipePipe } from '../pipe/timestamp-pipe.pipe';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbfNfncyea0XyhKQkmzURjXHIkDVC1HbA",
@@ -55,7 +56,8 @@ export const standaloneComponents = [
     PageRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    standaloneComponents
+    standaloneComponents,
+    TimestampPipePipe
   ],
 })
 export class PageModule { }

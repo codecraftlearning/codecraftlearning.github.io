@@ -1,4 +1,4 @@
-<div class="flex flex-row justify-end bg-primary w-full h-12 items-center gap-6 p-5">
+<div class="flex flex-row justify-end bg-primary w-full h-12 items-center gap-6 p-5" *ngIf="!shouldDisplayBurger && isFlex">
     @for (link of navItems; track link.name) {
     <a *ngIf="link.type === 'link'" [routerLink]="link.path" [fragment]="link.fragment" routerLinkActive="underline "
         class="text-white px-4 py-2 text-sm cursor-pointer font-poppins underline-offset-4 ">
@@ -30,4 +30,27 @@
     <a (click)="logout()" class="button-accent-sm" [class.hidden]="!isLoggedIn">
         Logout
     </a>
+</div>
+<div class="w-5 mr-2" aria-label="Open navigation menu" *ngIf="shouldDisplayBurger && !isFlex">
+    <button (click)="showDropdown = !showDropdown">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <rect y="4" width="24" height="2" rx="1"/>
+            <rect y="11" width="24" height="2" rx="1"/>
+            <rect y="18" width="24" height="2" rx="1"/>
+        </svg>
+    </button>
+    <div class="absolute right-5 mt-2 w-48 border border-1 bg-white rounded-lg shadow-lg z-50" *ngIf="showDropdown">
+        <ul class="flex flex-col">
+            <li *ngFor="let link of navItems">
+                <a *ngIf="link.type === 'link'" [routerLink]="link.path" [fragment]="link.fragment" (click)="showDropdown = false"
+                    class="block px-4 py-2 text-gray-800 hover:bg-primary hover:text-white font-poppins"  routerLinkActive="underline ">
+                    {{ link.name }}
+                </a>
+                <a *ngIf="link.type === 'fragment'" (click)="scrollTo(link?.fragment ?? ''); showDropdown = false"
+                    class="block px-4 py-2 text-gray-800 hover:bg-primary hover:text-white font-poppins"  routerLinkActive="underline ">
+                    {{ link.name }}
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>

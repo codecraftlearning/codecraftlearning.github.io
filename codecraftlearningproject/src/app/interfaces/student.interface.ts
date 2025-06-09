@@ -12,6 +12,7 @@ export interface IStudent {
 
 export interface IStudentCourse {
     name: string;
+    customName?: string;
     batchName?: string;
     defaultDuration?: string;
     enrollmentDate?: Date;

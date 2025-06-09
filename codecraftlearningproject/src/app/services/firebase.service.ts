@@ -3,20 +3,23 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { lastValueFrom, Observable } from 'rxjs';
 import { FirebaseCollections } from '../constants/commons.enum';
 import { collection, collectionData, doc, getDocs, limit, orderBy, query, setDoc } from '@angular/fire/firestore';
+import { getAuth } from '@angular/fire/auth';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FirebaseService {
-    
+    private currentUserData?: {id: string};
     constructor(
         public firestore: AngularFirestore,
-    ) {}
+    ) { }
 
    
     public async saveNewData(collectionName: FirebaseCollections, data: any, id?: string): Promise<any> {
+        const user = getAuth().currentUser;
+        this.currentUserData = {id: user?.uid || ''};
         const ref = doc(this.firestore.firestore, collectionName, id || this.firestore.createId());
-        return setDoc(ref, { ...data, id: ref.id }, { merge: true });
+        return setDoc(ref, { ...data, id: ref.id }, { merge: true }, );
     }
 
     public getAllFromCollection(collectionName: FirebaseCollections, idFieldName?: string): Observable<any[]> {

@@ -31,6 +31,7 @@
                     <th scope="col" class="px-6 py-3 text-primary">Age</th>
                     <th scope="col" class="px-6 py-3 text-primary">Email</th>
                     <th scope="col" class="px-6 py-3 text-primary">Phone</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Date</th>
                     <th scope="col" class="px-6 py-3 text-primary">Package Name</th>
                     <th scope="col" class="px-6 py-3 text-primary">Technologies</th>
                     <th scope="col" class="px-6 py-3 text-primary">Status</th>
@@ -47,6 +48,7 @@
                         <td class="px-6 py-4">{{enquiry.age}}</td>
                         <td class="px-6 py-4">{{enquiry.email}}</td>
                         <td class="px-6 py-4">{{enquiry.contactNumber}}</td>
+                        <td class="px-6 py-4">{{enquiry.createdDate | timestampPipe}}</td>
                         <td class="px-6 py-4">{{enquiry.packageName}}</td>
                         <td class="px-6 py-4">{{enquiry.technologies.join(', ')}}</td>
                         <td class="px-6 py-4">{{enquiry.status}}</td>

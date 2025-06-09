@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full gap-6" >
+<div class="flex flex-col w-full gap-6 xs:-mt-8 sm:-mt-8" >
     <p class="text-text font-poppins text-sm w-full">Note: This certificate is issued by Code Craft Learning, a private
         training provider. It is not affiliated with
         any government body or formal academic institution. The certification recognizes successful participation and
@@ -10,12 +10,12 @@
         <span class="font-normal text-3xl font-outfit text-primary">Enter Certificate ID</span>
         <div class="w-full flex flex-row justify-center items-center">
             <input type="text"
-                class="border border-primary border-1 rounded-lg bg-secondary px-4 py-2 w-2/4 text-text text-lg justify-self-center text-center"
+                class="border border-primary border-1 rounded-lg bg-secondary px-4 py-2 2xl:w-2/4 xl:w-2/4 lg:w-2/4 md:w-2/4 sm:w-[90%] xs:w-[90%] text-text text-lg justify-self-center text-center"
                 [(ngModel)]="certificateId" />
         </div>
-        <div class="w-full flex flex-row justify-center items-center gap-2">
-            <button class="button-accent-2xl py-5 " (click)="loadCertificate()">Validate a certification</button>
-            <button class="button-primary-2xl py-5 " (click)="loadCertificate(true)">Download your certificate</button>
+        <div class="w-full flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-center items-center gap-2">
+            <button class="button-accent-2xl py-5 2xl:w-full xl:w-full lg:w-full md:w-full sm:w-[90%] xs:w-[90%]" (click)="loadCertificate()">Validate a certification</button>
+            <button class="button-primary-2xl py-5 2xl:w-full xl:w-full lg:w-full md:w-full sm:w-[90%] xs:w-[90%]" (click)="loadCertificate(true)">Download your certificate</button>
         </div>
         <div class="flex flex-row justify-center">
             <app-loader [loading]="loading" class="w-10 h-10"></app-loader>

@@ -14,6 +14,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './standalone-components/header/header.component';
 import { FooterComponent } from './standalone-components/footer/footer.component';
+import { TimestampPipePipe } from './pipe/timestamp-pipe.pipe';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbfNfncyea0XyhKQkmzURjXHIkDVC1HbA",
@@ -27,7 +28,7 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

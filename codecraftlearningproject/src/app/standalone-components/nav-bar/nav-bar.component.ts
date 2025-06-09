@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { Auth, authState, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from '@angular/fire/auth';
+import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import { Auth, authState, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from '@angular/fire/auth';
 import { Router, RouterModule } from '@angular/router';
 import { from, map, Subscription, take } from 'rxjs';
 
@@ -12,6 +12,9 @@ import { from, map, Subscription, take } from 'rxjs';
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements OnDestroy {
+  @Input()
+  public isFlex: boolean = true;
+  public showDropdown: boolean = false;
   public isLoggedIn: boolean = false;
   public navItems = [
     { name: 'About', path: '/pages/home', type: 'link', fragment: '' },
@@ -33,6 +36,7 @@ export class NavBarComponent implements OnDestroy {
     });
     this.subscription.add(sub);
   }
+
 
   public googleLogin() {
     const sub = from(signInWithPopup(this.auth, new GoogleAuthProvider())).subscribe((result) => {
@@ -67,5 +71,9 @@ export class NavBarComponent implements OnDestroy {
 
   public ngOnDestroy(): void {
     this.subscription.unsubscribe(); // Clean up the subscription to avoid memory leaks
+  }
+
+  public get shouldDisplayBurger(): boolean {
+    return window.screen.width <= 390;
   }
 }

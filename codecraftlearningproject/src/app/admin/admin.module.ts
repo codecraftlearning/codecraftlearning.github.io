@@ -10,6 +10,7 @@ import { LoaderComponent } from "../standalone-components/loader/loader.componen
 import { EnquiryComponent } from './enquiry/enquiry.component';
 import { PackagesComponent } from './packages/packages.component';
 import { DropdownComponent } from '../standalone-components/dropdown/dropdown.component';
+import { TimestampPipePipe } from "../pipe/timestamp-pipe.pipe";
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DropdownComponent } from '../standalone-components/dropdown/dropdown.co
     FormsModule,
     RouterModule,
     LoaderComponent,
-    DropdownComponent
+    DropdownComponent,
+    TimestampPipePipe
 ]
 })
 export class AdminModule { }
