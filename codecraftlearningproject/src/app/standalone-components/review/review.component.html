@@ -3,7 +3,8 @@
         <span class="font-outfit text-2xl text-primary">Real Stories from Real Coders</span>
     </div>
     <div class="flex flex-col gap-4">
-        <div class="grid grid-cols-2 grid-rows-2 sm:grid-cols-1 sm:grid-rows-4 xs:grid-cols-1 xs:grid-rows-4 gap-4">
+        <div
+            class="grid 2xl:grid-cols-2 2xl:grid-rows-2 xl:grid-cols-2 xl:grid-rows-2 lg:grid-cols-2 lg:grid-rows-2 md:grid-cols-2 md:grid-rows-2 sm:grid-cols-1 sm:grid-rows-4 xs:grid-cols-1 xs:grid-rows-4 gap-4">
             <app-review-card *ngFor="let review of reviews" size="sm" [review]="review"></app-review-card>
         </div>
     </div>

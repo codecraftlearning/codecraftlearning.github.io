@@ -16,7 +16,7 @@
     </div>
     <div class="flex flex-row justify-center w-full p-12 bg-primary rounded-lg form-section"
         [class.hidden]="pageLoading">
-        <fieldset class="p-12  w-9/12 sm:w-full xs:w-full bg-transparent rounded-lg border  border-white">
+        <fieldset class="p-12 2xl:w-9/12 xl:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full xs:w-full bg-transparent rounded-lg border  border-white">
             <ng-container *ngIf="!formErrors && !formSubmitted">
                 <legend class="text-white font-outfit text-lg px-5">Basic Details</legend>
                 <form id="registrationForm" [formGroup]="studentForm" (ngSubmit)="onSubmit()"
