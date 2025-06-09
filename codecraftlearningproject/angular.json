@@ -55,7 +55,6 @@
                   "maximumError": "4kb"
                 }
               ],
-              "baseHref": "/codecraftlearning/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
