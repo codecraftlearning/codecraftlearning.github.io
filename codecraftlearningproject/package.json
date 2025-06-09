@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
-    "build-and-deploy": "ng build --configuration production --base-href=/codecraftlearning/ && copy robot.txt dist\\codecraftlearning\\browser\\robot.txt && copy dist\\codecraftlearning\\index.html dist\\codecraftlearning\\404.html && ng deploy --base-href=/codecraftlearning/" ,
+    "build-and-deploy": "ng build --configuration production  && copy robot.txt dist\\codecraftlearning\\browser\\robot.txt && copy CNAME dist\\codecraftlearning\\browser\\CNAME && copy dist\\codecraftlearning\\index.html dist\\codecraftlearning\\404.html && ng deploy --base-href=/codecraftlearning/" ,
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
