@@ -1,1 +1,11 @@
-{}
+{
+  "hosting": {
+    "public": "dist/codecraftlearningproject/browser",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

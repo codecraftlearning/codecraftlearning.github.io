@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
-    "build": "ng build",
+    "build-and-deploy": "ng build --configuration production --base-href=/codecraftlearning/ && copy robot.txt dist\\codecraftlearning\\browser\\robot.txt && copy dist\\codecraftlearning\\index.html dist\\codecraftlearning\\404.html && ng deploy --base-href=/codecraftlearning/" ,
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
+    "angular-cli-ghpages": "^2.0.3",
     "angularx-qrcode": "^19.0.0",
     "date-fns": "^4.1.0",
     "html2canvas": "^1.4.1",
