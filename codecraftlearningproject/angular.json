@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/codecraftlearningproject",
+            "outputPath": "dist/codecraftlearning",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -55,7 +55,13 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "baseHref": "/codecraftlearning/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "namedChunks": false,
+              "aot": true
             },
             "development": {
               "optimization": false,
