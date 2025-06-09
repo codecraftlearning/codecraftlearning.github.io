@@ -14,6 +14,6 @@ export class CertificateComponent {
   @Input() certificate?: ICertificate;
 
   public get certificateUrl(): string {
-    return this.certificate ? `codecraftlearning.in/pages/certification?id=${this.certificate.id}` : '';
+    return this.certificate ? `http://www.codecraftlearning.in/pages/certification?id=${this.certificate.id}` : '';
   }
 }
