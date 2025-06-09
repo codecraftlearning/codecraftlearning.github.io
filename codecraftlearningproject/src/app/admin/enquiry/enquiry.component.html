@@ -1,0 +1,69 @@
+<div class="flex flex-col gap-6 absolute left-0 px-10  w-full">
+    <div class="flex flex-row w-full justify-center border border-primary rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
+            <caption
+                class="text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 p-4 text-left rounded-lg ">
+                <div class="flex flex-row justify-between ">
+                    <div class="flex flex-row gap-6 align-middle h-10 items-center">
+                        <span>Enquiry List</span>
+                        <span class="text-gray-500 text-sm">Total Enquiries: {{enquiries.length}}</span>
+                    </div>
+                    <div class="flex flex-row gap-6">
+                    <div class="flex flex-row gap-4 items-center">
+                        <label *ngFor="let status of enquiryStatus" class="flex flex-row items-center gap-1">
+                            <input
+                                type="checkbox"
+                                [value]="status"
+                                [(ngModel)]="selectedStatuses[status]"
+                                class="accent-primary"
+                            />
+                            <span>{{ status }}</span>
+                        </label>
+                    </div>
+                </div>
+                </div>
+                
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="table-row">
+                    <th scope="col" class="px-6 py-3 text-primary">Id</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Age</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Email</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Phone</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Date</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Package Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Technologies</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Status</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Notes</th>
+                    <th scope="col" class="px-6 py-3 text-primary"></th>
+                </tr>
+            </thead>
+            <tbody class="">
+                <ng-container *ngFor="let enquiry of filteredEnquiries; let i=index">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-text status"
+                        [class]="enquiry.status">
+                        <td class="px-6 py-4">{{enquiry.id}}</td>
+                        <td class="px-6 py-4">{{enquiry.fullName}}</td>
+                        <td class="px-6 py-4">{{enquiry.age}}</td>
+                        <td class="px-6 py-4">{{enquiry.email}}</td>
+                        <td class="px-6 py-4">{{enquiry.contactNumber}}</td>
+                        <td class="px-6 py-4">{{enquiry.createdDate | timestampPipe}}</td>
+                        <td class="px-6 py-4">{{enquiry.packageName}}</td>
+                        <td class="px-6 py-4">{{enquiry.technologies.join(', ')}}</td>
+                        <td class="px-6 py-4">{{enquiry.status}}</td>
+                        <td class="px-6 py-4">{{enquiry.notes}}</td>
+                        <td class="px-6 py-4 text-center flex flex-row gap-2">
+                            <a class="text- underline underline-offset-2 cursor-pointer"
+                                (click)="viewEnquiry(enquiry)">View</a>
+                            <a class="text-black underline underline-offset-2 cursor-pointer"
+                                (click)="confirmEnquiry(enquiry)">Confirm</a>
+                            <a class="text-red-500 underline underline-offset-2 cursor-pointer"
+                                (click)="cancelEnquiry(enquiry)">Cancel</a>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

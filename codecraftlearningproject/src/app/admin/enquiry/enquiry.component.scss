@@ -1,0 +1,16 @@
+/* enquiry.component.scss */
+
+.status {
+    &.pending {
+        background-color: #ffe082; // amber lighten-3
+    }
+    &.contacted {
+        background-color: #b3e5fc; // light blue lighten-3
+    }
+    &.cancelled {
+        background-color: #ffcdd2; // red lighten-4
+    }
+    &.confirmed {
+        background-color: #c8e6c9; // green lighten-4
+    }
+}

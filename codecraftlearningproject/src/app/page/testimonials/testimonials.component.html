@@ -1,0 +1,156 @@
+<div class="flex flex-col w-full gap-4 sm:-mt-12 xs:-mt-12">
+    <app-loader [loading]="pageLoading"></app-loader>
+    <ng-container *ngIf="!pageLoading">
+
+        <div class="flex sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between">
+            <div class="flex flex-col w-full gap-1">
+                <h2 class="text-xl font-semibold  text-primary underline underline-offset-2 font-outfit">There is
+                    nothing
+                    more convincing than, word of mouth</h2>
+                <p class="text-lg  text-text font-poppins">Listen to what our students have to say</p>
+            </div>
+            <button class="button-accent-2xl" (click)="addReview = true">Add Review</button>
+        </div>
+
+        <div class="flex flex-col w-full gap-4" *ngIf="reviews && reviews.length > 0; else noReviews">
+            <app-review-card *ngFor="let review of reviews" size="lg" [review]="review"></app-review-card>
+        </div>
+        <ng-template #noReviews>
+            <div class="flex flex-col items-center justify-center py-8">
+                <p class="text-lg text-gray-500 font-poppins">No reviews yet. Be the first to <a
+                        class="text-accent cursor-pointer underline underline-offset-2" (click)="addReview = true">add
+                        one!</a></p>
+            </div>
+        </ng-template>
+
+        <div *ngIf="addReview"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm w-screen h-screen">
+            <div class="relative bg-secondary rounded-lg shadow-lg p-6 min-w-[400px] w-full max-w-2xl">
+                <div
+                    class="flex flex-row justify-between w-full bg-primary py-3 px-5 text-white rounded-lg align-middle">
+                    <h3 class="text-lg font-semibold ">Add Your Review</h3>
+                    <button (click)="addReview = false"
+                        class="text-3xl font-semibold cursor-pointer hover:text-gray-300 transition-colors"
+                        aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <div class="flex justify-start">
+
+                    <form [formGroup]="reviewForm" class="flex flex-col gap-4 w-full max-w-lg  p-4 rounded"
+                        (ngSubmit)="onSubmit()">
+                        <app-loader [loading]="reviewSubmitting"></app-loader>
+                        <ng-container *ngIf="!reviewSubmitting">
+
+                            <div class="flex items-center gap-2">
+                                <input id="existingStudent" type="checkbox" formControlName="existingStudent"
+                                    class="scale-125 cursor-pointer" />
+                                <label for="existingStudent" class="font-medium">Are you an existing student?</label>
+                            </div>
+                            <div class="flex flex-col gap-1" *ngIf="reviewForm.get('existingStudent')?.value">
+                                <label for="studentId" class="font-medium">Student ID</label>
+                                <input id="studentId" type="text"
+                                    class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
+                                    formControlName="studentId" />
+                                <div *ngIf="isInvalidStudentId" class="text-red-500 text-sm">
+                                    Invalid student Id
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1" *ngIf="reviewForm.get('existingStudent')?.value">
+                                <label for="studentId" class="font-medium">Registered Email ID</label>
+                                <input id="studentId" type="text"
+                                    class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
+                                    formControlName="emailId" />
+                                <div *ngIf="isInvalidEmailId" class="text-red-500 text-sm">
+                                    Email Id does not match
+                                </div>
+                                <div *ngIf="reviewForm.get('emailId')?.invalid && reviewForm.get('emailId')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Not a valid Email Id
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                                <label for="name" class="font-medium">Name</label>
+                                <input id="name" type="text"
+                                    class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
+                                    formControlName="name" required />
+                                <div *ngIf="reviewForm.get('name')?.invalid && reviewForm.get('name')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Required*
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                                <label class="font-medium mb-1">Gender</label>
+                                <div class="flex flex-row gap-6 ml-4">
+                                    <label class="flex items-center gap-2">
+                                        <input class="scale-150 cursor-pointer" type="radio" value="Male"
+                                            formControlName="gender" required />
+                                        <span class="text-text font-poppins">Male</span>
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input class="scale-150 cursor-pointer" type="radio" value="Female"
+                                            formControlName="gender" required />
+                                        <span class="text-text font-poppins">Female</span>
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input class="scale-150 cursor-pointer" type="radio" value="Other"
+                                            formControlName="gender" required />
+                                        <span class="text-text font-poppins">Other</span>
+                                    </label>
+                                </div>
+                                <div *ngIf="reviewForm.get('gender')?.invalid && reviewForm.get('gender')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Required*
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                                <label for="course" class="font-medium">Your Course Title</label>
+                                <input id="course" type="text"
+                                    class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
+                                    formControlName="courseTitle" required />
+                                <div *ngIf="reviewForm.get('courseTitle')?.invalid && reviewForm.get('courseTitle')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Required*
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label for="message" class="font-medium">Review Message</label>
+                                <textarea id="message" rows="4"
+                                    class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
+                                    formControlName="message" required></textarea>
+                                <div *ngIf="reviewForm.get('message')?.invalid && reviewForm.get('message')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Required*
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-medium mb-1">Rating <span class="text-sm text-text">(1 is Lowest and
+                                        5 is
+                                        Highest)</span></label>
+                                <div class="flex flex-row gap-6 ml-4">
+                                    <ng-container *ngFor="let r of [1,2,3,4,5]">
+                                        <label class="flex items-center gap-2">
+                                            <input class="scale-150 cursor-pointer " type="radio" [value]="r"
+                                                formControlName="rating" required />
+                                            <span class="text-text font-poppins text-lg">{{r}}</span>
+                                        </label>
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="reviewForm.get('rating')?.invalid && reviewForm.get('rating')?.touched"
+                                    class="text-red-500 text-sm">
+                                    Required*
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <button type="submit" class="button-accent-2xl mt-2">
+                            Submit Review
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </ng-container>
+</div>

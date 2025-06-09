@@ -1,0 +1,82 @@
+<div class="flex flex-col w-full gap-6 xs:-mt-8 sm:-mt-8" >
+    <p class="text-text font-poppins text-sm w-full">Note: This certificate is issued by Code Craft Learning, a private
+        training provider. It is not affiliated with
+        any government body or formal academic institution. The certification recognizes successful participation and
+        skill
+        development through our proprietary training programs.
+    </p>
+
+    <div class="flex flex-col w-full justify-center text-center gap-4">
+        <span class="font-normal text-3xl font-outfit text-primary">Enter Certificate ID</span>
+        <div class="w-full flex flex-row justify-center items-center">
+            <input type="text"
+                class="border border-primary border-1 rounded-lg bg-secondary px-4 py-2 2xl:w-2/4 xl:w-2/4 lg:w-2/4 md:w-2/4 sm:w-[90%] xs:w-[90%] text-text text-lg justify-self-center text-center"
+                [(ngModel)]="certificateId" />
+        </div>
+        <div class="w-full flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-center items-center gap-2">
+            <button class="button-accent-2xl py-5 2xl:w-full xl:w-full lg:w-full md:w-full sm:w-[90%] xs:w-[90%]" (click)="loadCertificate()">Validate a certification</button>
+            <button class="button-primary-2xl py-5 2xl:w-full xl:w-full lg:w-full md:w-full sm:w-[90%] xs:w-[90%]" (click)="loadCertificate(true)">Download your certificate</button>
+        </div>
+        <div class="flex flex-row justify-center">
+            <app-loader [loading]="loading" class="w-10 h-10"></app-loader>
+        </div>
+        <div class="flex flex-row justify-center text-center" *ngIf="error.length">
+            <span class="text-red-600 text-2xl font-outfit">{{error}}</span>
+        </div>
+        <div class="flex flex-row justify-center text-center" *ngIf="!!certificate">
+            <table class="min-w-[400px] max-w-[720px] border border-gray-300 rounded-lg bg-white shadow-md text-left">
+                <caption class="px-4 py-2 bg-primary text-white font-semibold rounded-t-lg">
+                    Certificate Details
+                </caption>
+                <tbody>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Certificate ID</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Issued To</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.issuedTo }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Course Title</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.courseTitle }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Technologies Covered</th>
+                        <td class="px-4 py-2 border-b">
+                            {{ certificate.technologiesCovered }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Duration</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.duration }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Completion Date</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.completionDate }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Certified By</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.certifiedBy }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Mode of Learning</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.modeOfLearning }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 border-b font-semibold">Certification Type</th>
+                        <td class="px-4 py-2 border-b">{{ certificate.certificationType }}</td>
+                    </tr>
+                    <tr>
+                        <th class="px-4 py-2 font-semibold">Issued Under</th>
+                        <td class="px-4 py-2">{{ certificate.IssuedUnder }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div  class="flex flex-row justify-center text-center  opacity-0 fixed w-[90vw] -bottom-[100vh]" *ngIf="!!certificate" >
+            <app-certificate id="capture-area"  [certificate]="certificate"></app-certificate>
+        </div>
+    </div>
+
+</div>

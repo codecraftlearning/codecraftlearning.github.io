@@ -1,0 +1,68 @@
+<div class="flex flex-col gap-1 w-fit bg-secondary p-8 shadow-sm " *ngIf="!certificate">
+    <div class="flex flex-row w-full gap-12">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-row justify-start gap-3 w-full items-center">
+                <img src="./../../../assets/images/2L1.png" alt="Logo" class="w-7 h-auto" />
+                <span class="font-outfit font-semibold text-primary text-xl drop-shadow-md">Code Craft Learning</span>
+            </div>
+            <span class="text-accent text-xl uppercase font-outfit font-bold">certificate of completion</span>
+            <span class="text-text text-base font-poppins">This is to certify that</span>
+            <span class="text-primary text-xl font-outfit underline underline-offset-2">Name Surname</span>
+            <p class="text-text text-base font-poppins text-wrap">Has completed, Full Stack development </p>
+
+
+        </div>
+        <div class="flex flex-col justify-center gap-3 text-center">
+            <div class="flex flex-row justify-center">
+                <qrcode qrdata="https://www.codecraftlearning.in" [margin]="0"></qrcode>
+            </div>
+            <span class="bg-white px-2 py-1 text-text text-sm font-poppins text-nowrap">312-234423-sdfg</span>
+
+        </div>
+    </div>
+    <div class="flex flex-row w-full mt-4 gap-12 justify-between">
+        <div class="flex flex-col text-center justify-center w-32">
+            <span class="text-text text-base h-6 ">20/04/2025</span>
+            <span class=" text-primary font-outfit text-xl border-t-2 border-primary">Date</span>
+        </div>
+        <div class="flex flex-col text-center justify-center w-32">
+            <span class="text-text text-base h-6 "></span>
+            <span class=" text-primary font-outfit text-xl border-t-2 border-primary">Director</span>
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-1 w-[1050px] bg-secondary p-14 shadow-sm " *ngIf="certificate">
+    <div class="flex flex-row w-full justify-between">
+        <div class="flex flex-col gap-2 text-start">
+            <div class="flex flex-row justify-start gap-3 w-full items-center mb-4">
+                <img src="./../../../assets/images/2L1.png" alt="Logo" class="w-16 h-auto" />
+                <span class="font-outfit font-semibold text-primary text-6xl drop-shadow-md -mt-10">Code Craft Learning</span>
+            </div>
+            <span class="text-accent text-4xl uppercase font-outfit font-bold mb-9">certificate of {{certificate.certificationType}}</span>
+            <span class="text-text text-2xl font-poppins">This is to certify that</span>
+            <div class="text-primary text-4xl font-outfit border-b border-b-1 border-primary w-fit pb-5 my-3">{{certificate.issuedTo | titlecase}}
+            </div>
+            <p class="text-text text-2xl font-poppins text-wrap">Has completed, {{certificate.courseTitle}} </p>
+
+
+        </div>
+        <div class="flex flex-col justify-center gap-3 text-center">
+            <div class="flex flex-row justify-center">
+                <qrcode [qrdata]="certificateUrl" [width]="200" [margin]="0"></qrcode>
+            </div>
+            <span class="bg-white px-2 py-1 pb-4 text-text text-2xl font-poppins text-nowrap">{{certificate.id}}</span>
+
+        </div>
+    </div>
+    <div class="flex flex-row w-full mt-12 gap-12 justify-between">
+        <div class="flex flex-col text-center justify-center w-52">
+            <span class="text-text text-2xl h-6 mb-5">{{certificate.completionDate}}</span>
+            <span class=" text-primary font-outfit text-3xl border-t-2 border-primary">Date</span>
+        </div>
+        <div class="flex flex-col text-center justify-center w-52">
+            <span class="text-text text-2xl h-6 mb-5">{{certificate.certifiedBy}}</span>
+            <span class=" text-primary font-outfit text-3xl border-t-2 border-primary">Director</span>
+        </div>
+    </div>
+</div>

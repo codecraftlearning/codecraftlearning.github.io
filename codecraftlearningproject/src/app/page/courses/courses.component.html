@@ -1,0 +1,170 @@
+<div class="flex flex-col gap-9 sm:-mt-16 xs:-mt-16">
+    <app-loader [loading]="pageLoading"></app-loader>
+    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between items-center" *ngIf="!pageLoading">
+        <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-start gap-2">
+            <span class="text-text font-outfit text-lg underline underline-offset-2">Pick from our predefined packages
+                or</span>
+            <button class="button-accent-xs" (click)="scrollTo('registrationForm')">Create your own package</button>
+        </div>
+        <span class="text-text font-poppins text-xs">Don't worry, payment details are not required for this step</span>
+    </div>
+    <div class="grid  sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 ">
+        <div *ngFor="let package of coursePackages" class="flex justify-center w-full">
+            <app-course-package [coursePackage]="package" (courseSelected)="packageSelected($event)"
+                class="w-full"></app-course-package>
+        </div>
+    </div>
+    <div class="flex flex-row justify-center w-full p-12 bg-primary rounded-lg form-section"
+        [class.hidden]="pageLoading">
+        <fieldset class="p-12 2xl:w-9/12 xl:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full xs:w-full bg-transparent rounded-lg border  border-white">
+            <ng-container *ngIf="!formErrors && !formSubmitted">
+                <legend class="text-white font-outfit text-lg px-5">Basic Details</legend>
+                <form id="registrationForm" [formGroup]="studentForm" (ngSubmit)="onSubmit()"
+                    class="flex flex-col gap-6">
+                    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="fullName"
+                                class="text-base font-poppins font-medium text-white w-2/3 text-nowrap">Full
+                                Name</label>
+                            <div class="flex flex-col w-full">
+                                <input id="fullName" type="text" formControlName="fullName"
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white " />
+                                <div *ngIf="studentForm.get('fullName')?.invalid && studentForm.get('fullName')?.touched"
+                                    class="text-red-500 text-xs">
+                                    <span *ngIf="studentForm.get('fullName')?.errors?.['required']">Full Name is
+                                        required.</span>
+                                    <span *ngIf="studentForm.get('fullName')?.errors?.['minlength']">Minimum 3
+                                        characters
+                                        required.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="email" class="text-base font-poppins font-medium text-white w-2/3">Email</label>
+                            <div class="flex flex-col w-full">
+                                <input id="email" type="email" formControlName="email"
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                <div *ngIf="studentForm.get('email')?.invalid && studentForm.get('email')?.touched"
+                                    class="text-red-500 text-xs">
+                                    <span *ngIf="studentForm.get('email')?.errors?.['required']">Email is
+                                        required.</span>
+                                    <span *ngIf="studentForm.get('email')?.errors?.['email']">Invalid email
+                                        format.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="age" class="text-base font-poppins font-medium text-white w-2/3">Age</label>
+                            <div class="flex flex-col w-full">
+                                <input id="age" type="number" formControlName="age"
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                <div *ngIf="studentForm.get('age')?.invalid && studentForm.get('age')?.touched"
+                                    class="text-red-500 text-xs">
+                                    <span *ngIf="studentForm.get('age')?.errors?.['required']">Age is required.</span>
+                                    <span *ngIf="studentForm.get('age')?.errors?.['min']">Age must be greater than
+                                        0.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="contactNumber"
+                                class="text-base font-poppins font-medium text-white w-2/3 text-nowrap">Contact
+                                Number</label>
+                            <div class="flex flex-col w-full">
+                                <input id="contactNumber" type="text" formControlName="contactNumber"
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                <div *ngIf="studentForm.get('contactNumber')?.invalid && studentForm.get('contactNumber')?.touched"
+                                    class="text-red-500 text-xs">
+                                    <span *ngIf="studentForm.get('contactNumber')?.errors?.['required']">Contact Number
+                                        is
+                                        required.</span>
+                                    <span *ngIf="studentForm.get('contactNumber')?.errors?.['pattern']">Invalid contact
+                                        number
+                                        format.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between xs:p-4 sm:p-4 xs:border xs:border-1 xs:border-dotted xs:border-white sm:border sm:border-1 sm:border-dotted sm:border-white">
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="packageName"
+                                class="text-base font-poppins font-medium text-white w-2/3 text-nowrap">Select Package
+                                from
+                                above</label>
+                            <div class="flex flex-col w-full">
+                                <input readonly id="packageName" type="text" formControlName="packageName"
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                <div *ngIf="studentForm.errors?.['packageOrTechnologiesRequired']"
+                                    class="text-red-500 text-xs">
+                                    Select a package or at least one technology.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row h-full justify-center items-center ">
+                            <span class="text-lg font-outfit font-bold text-accent ">OR</span>
+                        </div>
+                        <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
+                            <label for="technologies"
+                                class="text-base font-poppins font-medium text-white w-2/3">Technologies from the
+                                list</label>
+                            <div class="flex flex-col w-full">
+                                <app-dropdown [items]="availableTechnologies" [multiselect]="true" class="w-full"
+                                    formControlName="technologies"></app-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row justify-center">
+                        <button type="submit" class="button-accent-sm w-1/2 sm:w-full xs:w-full"
+                            [disabled]="submittingForm">
+                            <ng-container *ngIf="submittingForm">
+                                <span class="loader"></span> Submitting...
+                            </ng-container>
+                            <ng-container *ngIf="!submittingForm">
+                                Submit
+                            </ng-container>
+                        </button>
+                    </div>
+                </form>
+            </ng-container>
+            <ng-container class="flex flex-col gap-6" *ngIf="!submittingForm && formSubmitted">
+                <legend class="text-white font-outfit text-lg px-5 flex items-center gap-2">
+                    <span class="text-green-500 text-3xl">✔</span>
+                    Registration Successful
+                </legend>
+                <div class="flex flex-row justify-between">
+                    <div class="flex flex-col gap-2">
+                        <span class="text-white font-poppins text-base">Thank you for registering! We have received your
+                            details.</span>
+                        <span class="text-white font-poppins text-base">We will get back to you shortly with further
+                            instructions.</span>
+                        <span class="text-white font-poppins text-base">If you have any questions, feel free to reach
+                            out to us.</span>
+                        <span class="text-white font-poppins text-base">Best regards,</span>
+                        <span class="text-white font-poppins text-base">Code Craft Learning Team</span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center">
+                        <img src="./../../../assets/images/2L1.png" alt="Thank You"
+                            class="h-auto drop-shadow-lg text-white" />
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container class="flex flex-col gap-6" *ngIf="!submittingForm && formErrors">
+                <legend class="text-white font-outfit text-lg px-5 flex items-center gap-2">
+                    <span class="text-red-500 text-3xl">✖</span>
+                    Registration Unsuccessful
+                </legend>
+                <div class="flex flex-col gap-4 items-center">
+                    <span class="text-white font-poppins text-base">We encountered an issue while processing your
+                        registration.</span>
+                    <span class="text-white font-poppins text-base">Please try again or contact support if the issue
+                        persists.</span>
+                    <button class="button-accent-sm" (click)="retryRegistration()">Retry</button>
+                </div>
+            </ng-container>
+        </fieldset>
+    </div>
+</div>
