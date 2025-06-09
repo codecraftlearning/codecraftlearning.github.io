@@ -21,6 +21,18 @@
       "logo": "https://www.codecraftlearning.com/assets/images/2L1.png"
     }
   </script>
+  <script>
+    (function () {
+      if (location.search.includes('debug=true')) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+        script.onload = function () {
+          eruda.init();
+        };
+        document.body.appendChild(script);
+      }
+    })();
+  </script>
   <link rel="canonical" href="https://www.codecraftlearning.in/pages/courses">
   <meta property="og:title" content="Best Online Coding Bootcamp">
   <meta property="og:description" content="Learn full stack development from industry experts.">
@@ -32,6 +44,6 @@
 
 <body>
   <app-root></app-root>
-<script src="polyfills-FFHMD2TL.js" type="module"></script><script src="main-VPFCXIM3.js" type="module"></script></body>
+<script src="polyfills-FFHMD2TL.js" type="module"></script><script src="main-I6QCX6XP.js" type="module"></script></body>
 
 </html>

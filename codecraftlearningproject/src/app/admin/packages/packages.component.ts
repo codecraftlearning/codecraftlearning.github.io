@@ -53,7 +53,6 @@ export class PackagesComponent implements OnInit {
 
   public ngOnInit(): void {
     this.fetchPackages();
-
   }
 
   public createNewPackage() {
@@ -237,7 +236,6 @@ export class PackagesComponent implements OnInit {
       });
     });
     this.availableTechnologies = Array.from(techs);
-    console.log('Available Technologies:', this.availableTechnologies);
 
   }
 
@@ -246,6 +244,8 @@ export class PackagesComponent implements OnInit {
     this.subscription.add(
       this.firebaseService.getAllFromCollection(FirebaseCollections.coursePackages).subscribe({
         next: (packages: CoursePackage[]) => {
+          console.log(packages);
+          
           this.packages = packages.sort((a, b) => a.index - b.index);
           this.loading = false;
           this.loadAllTechnologies();
