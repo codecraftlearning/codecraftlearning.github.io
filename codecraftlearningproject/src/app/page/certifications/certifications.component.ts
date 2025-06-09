@@ -66,7 +66,7 @@ export class CertificationsComponent implements OnInit {
 
     html2canvas(element, { backgroundColor: '#fff' }).then(canvas => {
       const jpgUrl = canvas.toDataURL('image/jpeg', 1);
-      this.downloadImage(jpgUrl, 'certificate.jpg');
+      this.downloadImage(jpgUrl, `Code_Craft_Learning_Certificate:_ID_(${this.certificateId}).jpg`);
     });
   }
 
