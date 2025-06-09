@@ -131,14 +131,14 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
   }
 
   private validateStudent() {
-    const studentId = this.reviewForm.get('studentId')?.value?.trim();
-    const emailId = this.reviewForm.get('emailId')?.value?.trim();
+    const studentId: string = this.reviewForm.get('studentId')?.value?.trim()?.toLowerCase();
+    const emailId: string = this.reviewForm.get('emailId')?.value?.trim()?.toLowerCase();
     this.isInvalidStudentId = false;
     this.isInvalidEmailId = false;
     this.subscriptions.add(
       this.firebaseService.getFromCollectionById(FirebaseCollections.students, studentId).subscribe((student: IStudent) => {
         if (!!student) {
-          if (student.contact.email === emailId) {
+          if (student.contact.email.toLowerCase() === emailId) {
             this.reviewForm.patchValue({
               name: student.name,
               emailId: student.contact.email,
