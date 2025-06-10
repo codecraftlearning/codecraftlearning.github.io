@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { CoursePackage, CoursePackageTechnology } from '../../interfaces/course-package.interface';
 import { CertificationStatus, CertificationType, CourseStatus, FirebaseCollections } from '../../constants/commons.enum';
 import { FirebaseService } from '../../services/firebase.service';
 import { from, Subscription } from 'rxjs';
-import { IStudent } from '../../interfaces/student.interface';
+import { IStudent, IStudentCourse } from '../../interfaces/student.interface';
 import { ICertificate } from '../../interfaces/certificate.interface';
 import { IStudentLog } from '../../interfaces/studentLog.interface';
 
@@ -70,6 +70,10 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
 
   public get courses(): FormArray {
     return this.studentForm.get('course') as FormArray;
+  }
+
+  public getTechStack(courseGroup: AbstractControl): string[] {
+    return courseGroup.get('technology')?.value ?? [];
   }
 
   public addCourse(course?: any) {
@@ -161,6 +165,18 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions.add(sub);
+  }
+  
+  public removeTechAt(courseControl: AbstractControl, index: number): void {
+    const value: string[] = courseControl.get('technology')?.value ?? [];
+    if (value.length === 1) {
+      return;
+    }
+    value.splice(index, 1);
+    courseControl.patchValue({
+      technology: value
+    });
+    courseControl.updateValueAndValidity();
   }
 
   public closeModal() {
@@ -283,7 +299,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     const certificate: any = {
       id: student.id ?? '',
       issuedTo: student.name,
-      courseTitle: student.course.name === 'CUSTOM' ? student.course.name : student.course.customName,
+      courseTitle: student.course.name !== 'CUSTOM' ? student.course.name : student.course.customName,
       technologiesCovered: student.course.technology,
       duration: `${student.course.defaultDuration} months`,
       completionDate: student.course.certification?.certificationDate,
