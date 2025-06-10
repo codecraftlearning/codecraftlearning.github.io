@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { CertificationsComponent } from './certifications/certifications.component';
 import { CoursesComponent } from './courses/courses.component';
 import { TestimonialsComponent } from './testimonials/testimonials.component';
+import { CollaborationComponent } from './collaboration/collaboration.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'courses',
     component: CoursesComponent
+  },
+  {
+    path: 'collaboration',
+    component: CollaborationComponent
   },
   {
     path: 'testimonials',

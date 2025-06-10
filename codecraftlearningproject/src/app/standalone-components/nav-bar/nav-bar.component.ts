@@ -19,6 +19,7 @@ export class NavBarComponent implements OnDestroy {
   public navItems = [
     { name: 'About', path: '/pages/home', type: 'link', fragment: '' },
     { name: 'Courses', path: '/pages/courses', type: 'link', fragment: '' },
+    { name: 'Collaboration', path: '/pages/collaboration', type: 'link', fragment: '' },
     { name: 'Testimonials', path: '/pages/testimonials', type: 'link', fragment: '' },
     { name: 'Certification', path: '/pages/certification', type: 'link', fragment: '' },
     { name: 'Contact', path: '', type: 'fragment', fragment: 'contact' }

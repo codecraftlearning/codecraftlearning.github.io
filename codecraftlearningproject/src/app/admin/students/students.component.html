@@ -1,11 +1,61 @@
-<div class="flex flex-col gap-6 absolute left-0 px-10  w-full">
+<div class="flex flex-col gap-2 absolute left-0 px-10  w-full -mt-12">
+    <fieldset class="border border-primary rounded-lg px-4 py-2">
+        <legend class="text-base font-semibold text-primary px-2">Filter</legend>
+        <form [formGroup]="filterForm" class="flex flex-row justify-start flex-wrap gap-4 form-group">
+            <div class="flex flex-col gap-1">
+                <label for="idFilter">Id</label>
+                <input id="idFilter" type="text" formControlName="id"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="nameFilter">Name</label>
+                <input id="nameFilter" type="text" formControlName="name"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="emailFilter">Email</label>
+                <input id="emailFilter" type="text" formControlName="email"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="phoneFilter">Phone</label>
+                <input id="phoneFilter" type="text" formControlName="phone"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="courseNameFilter">Course Name</label>
+                <input id="courseNameFilter" type="text" formControlName="courseName"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="batchNameFilter">Batch Name</label>
+                <input id="batchNameFilter" type="text" formControlName="batchName"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="courseStatusFilter">Course Status</label>
+                <select id="courseStatusFilter" formControlName="courseStatus"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+                    <option *ngFor="let status of courseStatus" [value]="status">{{status}}</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="certificationStatusFilter">Certification Status</label>
+                <select id="certificationStatusFilter" formControlName="certificationStatus"
+                    class="form-control border border-1 border-primary rounded-lg px-4 py-1 text-xs font-poppins">
+                    <option *ngFor="let status of certificationStatus" [value]="status">{{status}}</option>
+                </select>
+            </div>
+        </form>
+    </fieldset>
     <div class="flex flex-row w-full justify-center border border-primary rounded-lg">
+
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
             <caption
-                class="text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 p-4 text-left rounded-lg ">
-                <div class="flex flex-row gap-6 align-middle h-10">
+                class="text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 px-4 py-1 text-left rounded-lg ">
+                <div class="flex flex-row gap-6 items-center h-10 justify-between">
                     <span>Student List</span>
-                    <button class="button-primary-sm" (click)="createStudentModal = true">+ Create Student</button>
+                    <button class="button-primary-xs" (click)="createStudentModal = true">+ Create Student</button>
                 </div>
 
             </caption>
@@ -25,20 +75,35 @@
                 </tr>
             </thead>
             <tbody class="">
-                <ng-container *ngFor="let student of allStudents; let i=index">
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-text">
-                        <td class="px-6 py-4">{{student.id}}</td>
-                        <td class="px-6 py-4">{{student.name}}</td>
-                        <td class="px-6 py-4">{{student.age}}</td>
-                        <td class="px-6 py-4">{{student.gender}}</td>
-                        <td class="px-6 py-4">{{student.contact.email}}</td>
-                        <td class="px-6 py-4">{{student.contact.phone}}</td>
-                        <td class="px-6 py-4">{{student.course.name}}</td>
-                        <td class="px-6 py-4">{{student.course.batchName}}</td>
-                        <td class="px-6 py-4">{{student.course.status}}</td>
-                        <td class="px-6 py-4">{{student.course.certification?.certificationStatus}}</td>
-                        <td class="px-6 py-4 text-center">
-                            <a class="text-blue underline underline-offset-2 cursor-pointer" (click)="openStudent(student)">View</a>
+                <ng-container *ngFor="let student of filteredStudents; let i=index">
+                    <tr
+                        class="py-2 h-5 text-xs font-poppins 
+                        bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-text hover:outline hover:outline-1 hover:outline-black hover:bg-yellow-50">
+                        <td class="px-6">{{student.id}}</td>
+                        <td class="px-6">{{student.name}}</td>
+                        <td class="px-6">{{student.age}}</td>
+                        <td class="px-6">{{student.gender}}</td>
+                        <td class="px-6">{{student.contact.email}}</td>
+                        <td class="px-6">{{student.contact.phone}}</td>
+                        <td class="px-6">{{student.course.name}}</td>
+                        <td class="px-6">{{student.course.batchName}}</td>
+                        <td class="px-6" [ngClass]="{
+                                'course-completed': student.course.status?.toString() === 'completed',
+                                'course-in-progress': student.course.status?.toString() === 'in-progress',
+                                'course-not-started': student.course.status?.toString() === 'not-started'
+                            }">
+                            {{student.course.status}}
+                        </td>
+                        <td class="px-6" [ngClass]="{
+                                'certification-certified': student.course.certification?.certificationStatus?.toString() === 'Certified',
+                                'certification-pending': student.course.certification?.certificationStatus?.toString() === 'Pending',
+                                'certification-not-applicable': student.course.certification?.certificationStatus?.toString() === 'Not applicable'
+                            }">
+                            {{student.course.certification?.certificationStatus}}
+                        </td>
+                        <td class="px-6 text-center">
+                            <a class="text-blue underline underline-offset-2 cursor-pointer"
+                                (click)="openStudent(student)">View</a>
                         </td>
                     </tr>
                 </ng-container>

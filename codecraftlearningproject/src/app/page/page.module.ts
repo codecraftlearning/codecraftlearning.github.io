@@ -18,6 +18,7 @@ import { TechnologyComponent } from '../standalone-components/technology/technol
 import { PageRoutingModule } from './page-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimestampPipePipe } from '../pipe/timestamp-pipe.pipe';
+import { CollaborationComponent } from './collaboration/collaboration.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbfNfncyea0XyhKQkmzURjXHIkDVC1HbA",
@@ -49,7 +50,8 @@ export const standaloneComponents = [
     HomeComponent,
     CoursesComponent,
     TestimonialsComponent,
-    CertificationsComponent
+    CertificationsComponent,
+    CollaborationComponent
   ],
   imports: [
     CommonModule,
