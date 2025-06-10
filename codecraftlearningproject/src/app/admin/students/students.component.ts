@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
-import { FirebaseCollections } from '../../constants/commons.enum';
+import { CertificationStatus, CourseStatus, FirebaseCollections } from '../../constants/commons.enum';
 import { IStudent } from '../../interfaces/student.interface';
 import { ActivatedRoute } from '@angular/router';
 import { IEnquiry } from '../../interfaces/enquiries.interface';
@@ -17,11 +17,26 @@ import { CoursePackage } from '../../interfaces/course-package.interface';
 export class StudentsComponent implements OnInit, OnDestroy {
   public createStudentModal: boolean = false;
   public allStudents: IStudent[] = [];
+  public filteredStudents: IStudent[] = [];
   public selectedStudent?: IStudent;
+  public courseStatus: string[] = ['', ...Object.values(CourseStatus)];
+  public certificationStatus: string[] = ['', ...Object.values(CertificationStatus)];
   private subscriptions: Subscription = new Subscription();
   private courses: CoursePackage[] = [];
+  public filterForm: FormGroup;
 
-  constructor(private firebasseService: FirebaseService, private activatedRoute: ActivatedRoute) { }
+  constructor(private firebaseService: FirebaseService, private activatedRoute: ActivatedRoute, private fb: FormBuilder) {
+    this.filterForm = this.fb.group({
+      id: [''],
+      name: [''],
+      email: [''],
+      phone: [''],
+      courseName: [''],
+      batchName: [''],
+      courseStatus: [''],
+      certificationStatus: ['']
+    });
+  }
 
   public ngOnInit() {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -29,11 +44,56 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.loadAllCourses()
     this.loadAllStudents();
     this.loadParams();
+    this.filterFormChange();
+  }
+
+  private filterFormChange() {
+    const sub = this.filterForm.valueChanges.subscribe(() => {
+      this.filterStudentsOnChange();
+    });
+    this.subscriptions.add(sub);
+  }
+
+  private filterStudentsOnChange() {
+    const filters = this.filterForm.value;
+    let filteredStudents: IStudent[] = this.allStudents;
+    Object.keys(filters).forEach(filterKey => {
+      const value = '' + filters[filterKey];
+      if (value) {
+        switch (filterKey) {
+          case 'id':
+            filteredStudents = filteredStudents.filter(student => student.id?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'name':
+            filteredStudents = filteredStudents.filter(student => student.name?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'email':
+            filteredStudents = filteredStudents.filter(student => student.contact.email?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'phone':
+            filteredStudents = filteredStudents.filter(student => student.contact.phone?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'courseName':
+            filteredStudents = filteredStudents.filter(student => student.course.name?.toLowerCase().startsWith(value.trim().toLowerCase()) || student.course.customName?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'batchName':
+            filteredStudents = filteredStudents.filter(student => student.course.batchName?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'courseStatus':
+            filteredStudents = filteredStudents.filter(student => student.course.status?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+          case 'certificationStatus':
+            filteredStudents = filteredStudents.filter(student => student.course.certification?.certificationStatus?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            break;
+        }
+      }
+    });
+    this.filteredStudents = filteredStudents;
   }
 
   private loadAllCourses() {
     this.subscriptions.add(
-      this.firebasseService.getAllFromCollection(FirebaseCollections.coursePackages, 'title').subscribe((courses: CoursePackage[]) => {
+      this.firebaseService.getAllFromCollection(FirebaseCollections.coursePackages, 'title').subscribe((courses: CoursePackage[]) => {
         this.courses = courses;
       })
     )
@@ -43,7 +103,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.activatedRoute.queryParams.subscribe((params) => {
         if (params['enquiryId']) {
-          this.firebasseService.getFromCollectionById(FirebaseCollections.enquiries, params['enquiryId']).subscribe((enquiry: IEnquiry) => {
+          this.firebaseService.getFromCollectionById(FirebaseCollections.enquiries, params['enquiryId']).subscribe((enquiry: IEnquiry) => {
             this.openStudent(this.loadStudentWithEnquiry(enquiry));
           });
         }
@@ -93,8 +153,9 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   private loadAllStudents(): void {
     this.subscriptions.add(
-      this.firebasseService.getAllFromCollection(FirebaseCollections.students, 'id').subscribe((students: any[]) => {
-        this.allStudents = students;
+      this.firebaseService.getAllFromCollection(FirebaseCollections.students, 'id').subscribe((students: IStudent[]) => {
+        this.allStudents = students.sort((s1, s2) => (s1?.course?.enrollmentDate ?? 1) < (s2?.course?.enrollmentDate ?? 0) ? -1 : 1);
+        this.filteredStudents = this.allStudents;
       })
     );
   }
