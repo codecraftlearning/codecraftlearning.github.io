@@ -17,6 +17,7 @@ export enum Sizes {
 
 export enum FirebaseCollections {
     students = 'students',
+    studentLog = 'studentLog',
     coursePackages = 'coursePackages',
     enquiries = 'enquiries',
     reviews = 'reviews',

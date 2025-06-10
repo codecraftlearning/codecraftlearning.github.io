@@ -9,7 +9,7 @@
                     more convincing than, word of mouth</h2>
                 <p class="text-lg  text-text font-poppins">Listen to what our students have to say</p>
             </div>
-            <button class="button-accent-2xl" (click)="addReview = true">Add Review</button>
+            <button class="button-accent-2xl" (click)="addReview = true; reviewForm.reset()">Add Review</button>
         </div>
 
         <div class="flex flex-col w-full gap-4" *ngIf="reviews && reviews.length > 0; else noReviews">
@@ -29,7 +29,7 @@
                 <div
                     class="flex flex-row justify-between w-full bg-primary py-3 px-5 text-white rounded-lg align-middle">
                     <h3 class="text-lg font-semibold ">Add Your Review</h3>
-                    <button (click)="addReview = false"
+                    <button (click)="addReview = false; isExistingStudent = false"
                         class="text-3xl font-semibold cursor-pointer hover:text-gray-300 transition-colors"
                         aria-label="Close">
                         &times;
@@ -43,11 +43,11 @@
                         <ng-container *ngIf="!reviewSubmitting">
 
                             <div class="flex items-center gap-2">
-                                <input id="existingStudent" type="checkbox" formControlName="existingStudent"
+                                <input id="existingStudent" type="checkbox" (change)="toggleReviewAsExistingStudent()"
                                     class="scale-125 cursor-pointer" />
                                 <label for="existingStudent" class="font-medium">Are you an existing student?</label>
                             </div>
-                            <div class="flex flex-col gap-1" *ngIf="reviewForm.get('existingStudent')?.value">
+                            <div class="flex flex-col gap-1" *ngIf="isExistingStudent">
                                 <label for="studentId" class="font-medium">Student ID</label>
                                 <input id="studentId" type="text"
                                     class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
@@ -55,8 +55,11 @@
                                 <div *ngIf="isInvalidStudentId" class="text-red-500 text-sm">
                                     Invalid student Id
                                 </div>
+                                <div *ngIf="reviewForm.get('studentId')?.invalid && reviewForm.get('studentId')?.touched" class="text-red-500 text-sm">
+                                    Required*
+                                </div>
                             </div>
-                            <div class="flex flex-col gap-1" *ngIf="reviewForm.get('existingStudent')?.value">
+                            <div class="flex flex-col gap-1" *ngIf="isExistingStudent">
                                 <label for="studentId" class="font-medium">Registered Email ID</label>
                                 <input id="studentId" type="text"
                                     class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
@@ -69,7 +72,7 @@
                                     Not a valid Email Id
                                 </div>
                             </div>
-                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                            <div class="flex flex-col gap-1" *ngIf="!isExistingStudent">
                                 <label for="name" class="font-medium">Name</label>
                                 <input id="name" type="text"
                                     class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
@@ -79,7 +82,7 @@
                                     Required*
                                 </div>
                             </div>
-                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                            <div class="flex flex-col gap-1" *ngIf="!isExistingStudent">
                                 <label class="font-medium mb-1">Gender</label>
                                 <div class="flex flex-row gap-6 ml-4">
                                     <label class="flex items-center gap-2">
@@ -103,7 +106,7 @@
                                     Required*
                                 </div>
                             </div>
-                            <div class="flex flex-col gap-1" *ngIf="!reviewForm.get('existingStudent')?.value">
+                            <div class="flex flex-col gap-1" *ngIf="!isExistingStudent">
                                 <label for="course" class="font-medium">Your Course Title</label>
                                 <input id="course" type="text"
                                     class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"

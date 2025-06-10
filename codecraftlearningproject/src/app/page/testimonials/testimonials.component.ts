@@ -5,6 +5,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { FirebaseCollections } from '../../constants/commons.enum';
 import { Subscription } from 'rxjs';
 import { IStudent } from '../../interfaces/student.interface';
+import { IStudentLog } from '../../interfaces/studentLog.interface';
 
 @Component({
   selector: 'app-testimonials',
@@ -21,73 +22,45 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
   public reviews: Rating[] = [];
   public isInvalidStudentId: boolean = false;
   public isInvalidEmailId: boolean = false;
+  public isExistingStudent: boolean = false;
   private subscriptions: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private firebaseService: FirebaseService) {
     this.reviewForm = this.fb.group({
-      existingStudent: [false],
-      studentId: ['', []],
-      emailId: ['', []],
-      name: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      courseTitle: ['', [Validators.required]],
-      message: ['', [Validators.required, Validators.minLength(10)]],
+      studentId: [null],
+      emailId: [null],
+      name: [null],
+      gender: [null],
+      courseTitle: [null],
+      message: [null, [Validators.required, Validators.minLength(10)]],
       rating: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
       date: [new Date(), Validators.required]
     });
+  }
 
-    // Listen for changes to existingStudent and update validators accordingly
-    this.reviewForm.get('existingStudent')?.valueChanges.subscribe((isExisting: boolean) => {
-      const studentIdCtrl = this.reviewForm.get('studentId');
-      const emailIdCtrl = this.reviewForm.get('emailId');
-      const nameCtrl = this.reviewForm.get('name');
-      const genderCtrl = this.reviewForm.get('gender');
-      const courseTitleCtrl = this.reviewForm.get('courseTitle');
+  public toggleReviewAsExistingStudent() {
+    this.isExistingStudent = !this.isExistingStudent;
 
-      if (isExisting) {
-        studentIdCtrl?.setValidators([Validators.required]);
-        emailIdCtrl?.setValidators([Validators.required, Validators.email]);
-        nameCtrl?.clearValidators();
-        genderCtrl?.clearValidators();
-        courseTitleCtrl?.clearValidators();
-      } else {
-        studentIdCtrl?.clearValidators();
-        emailIdCtrl?.clearValidators();
-        nameCtrl?.setValidators([Validators.required]);
-        genderCtrl?.setValidators([Validators.required]);
-        courseTitleCtrl?.setValidators([Validators.required]);
-      }
+    if (this.isExistingStudent) {
+      this.reviewForm.get('studentId')?.setValidators(Validators.required);
+      this.reviewForm.get('emailId')?.setValidators([Validators.required, Validators.email]);
+      this.reviewForm.get('name')?.removeValidators(Validators.required);
+      this.reviewForm.get('name')?.setErrors(null);
+      this.reviewForm.get('gender')?.removeValidators(Validators.required);
+      this.reviewForm.get('gender')?.setErrors(null);;
+      this.reviewForm.get('courseTitle')?.removeValidators(Validators.required);
+      this.reviewForm.get('courseTitle')?.setErrors(null);
+    } else {
+      this.reviewForm.get('name')?.setValidators(Validators.required);
+      this.reviewForm.get('gender')?.setValidators(Validators.required);
+      this.reviewForm.get('courseTitle')?.setValidators(Validators.required);
+      this.reviewForm.get('studentId')?.removeValidators(Validators.required);
+      this.reviewForm.get('studentId')?.setErrors(null);;
+      this.reviewForm.get('emailId')?.removeValidators([Validators.required, Validators.email]);
+      this.reviewForm.get('emailId')?.setErrors(null);;
+    }
 
-      studentIdCtrl?.updateValueAndValidity();
-      emailIdCtrl?.updateValueAndValidity();
-      nameCtrl?.updateValueAndValidity();
-      genderCtrl?.updateValueAndValidity();
-      courseTitleCtrl?.updateValueAndValidity();
-    });
-
-    // Trigger initial validation
-    this.reviewForm.get('existingStudent')?.updateValueAndValidity({ emitEvent: true });
-
-    // Update validators based on existingStudent value
-    this.reviewForm.get('existingStudent')?.valueChanges.subscribe((isExisting: boolean) => {
-      const nameCtrl = this.reviewForm.get('name');
-      const genderCtrl = this.reviewForm.get('gender');
-      const courseTitleCtrl = this.reviewForm.get('courseTitle');
-
-      if (isExisting) {
-        nameCtrl?.clearValidators();
-        genderCtrl?.clearValidators();
-        courseTitleCtrl?.clearValidators();
-      } else {
-        nameCtrl?.setValidators([Validators.required]);
-        genderCtrl?.setValidators([Validators.required]);
-        courseTitleCtrl?.setValidators([Validators.required]);
-      }
-
-      nameCtrl?.updateValueAndValidity();
-      genderCtrl?.updateValueAndValidity();
-      courseTitleCtrl?.updateValueAndValidity();
-    });
+    this.reviewForm.updateValueAndValidity();
   }
 
   public ngOnInit(): void {
@@ -107,8 +80,13 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    this.reviewForm.patchValue( {
+      date: new Date()
+    });
+    this.reviewForm.updateValueAndValidity();
+    
     if (this.reviewForm.valid) {
-      if (this.reviewForm.get('existingStudent')?.value) {
+      if (this.isExistingStudent) {
         this.validateStudent();
       } else {
         this.submitDefaultReview();
@@ -136,13 +114,13 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
     this.isInvalidStudentId = false;
     this.isInvalidEmailId = false;
     this.subscriptions.add(
-      this.firebaseService.getFromCollectionById(FirebaseCollections.students, studentId).subscribe((student: IStudent) => {
+      this.firebaseService.getFromCollectionById(FirebaseCollections.studentLog, studentId).subscribe((student: IStudentLog) => {
         if (!!student) {
-          if (student.contact.email.toLowerCase() === emailId) {
+          if (student.email.toLowerCase() === emailId) {
             this.reviewForm.patchValue({
               name: student.name,
-              emailId: student.contact.email,
-              courseTitle: student.course.name,
+              emailId: student.email,
+              courseTitle: student.courseTitle,
               gender: student.gender,
             });
             this.reviewForm.updateValueAndValidity();
