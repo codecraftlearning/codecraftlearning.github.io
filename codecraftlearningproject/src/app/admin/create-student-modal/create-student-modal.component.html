@@ -132,13 +132,18 @@
                                     <label>Batch name</label>
                                     <input class="form-control" formControlName="batchName" />
                                 </div>
-                                <div class="form-group" *ngIf="course.get('name')?.value === 'CUSTOM'">
-                                    <label>Custom Course Name</label>
-                                    <input class="form-control" formControlName="customName" />
-                                    <div *ngIf="course.get('customName')?.invalid && course.get('customName')?.touched"
-                                        class="text-red-500">
-                                        Custom Course Name is required.
-                                    </div>
+
+                            </div>
+                            <div class="form-group flex flex-col w-full mb-3 border border-dotted border-1 border-black px-4 py-1">
+                                <label>Tech Stack</label>
+                                <div class="flex flex-row gap-2 flex-wrap mb-2">
+
+                                    <ng-container *ngFor="let tech of getTechStack(course); let i=index">
+                                        <div class="bg-blue-300 rounded-lg px-2 flex flex-row gap-4 items-center">
+                                            <span class="text-primary text-sm">{{tech}}</span>
+                                            <a *ngIf="getTechStack(course).length > 1" class="cursor-pointer text-black text-sm hover:text-red-500" (click)="removeTechAt(course, i)">x</a>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 gap-8">
@@ -153,20 +158,20 @@
                                         Course name is required.
                                     </div>
                                 </div>
+                                <div class="form-group" [class.disabled]="course.get('name')?.value !== 'CUSTOM'">
+                                    <label>Custom Course Name</label>
+                                    <input class="form-control" formControlName="customName" />
+                                    <div *ngIf="course.get('customName')?.invalid && course.get('customName')?.touched"
+                                        class="text-red-500">
+                                        Custom Course Name is required.
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label>Default Duration*</label>
                                     <input class="form-control" formControlName="defaultDuration" />
                                     <div *ngIf="course.get('defaultDuration')?.invalid && course.get('defaultDuration')?.touched"
                                         class="text-red-500">
                                         Duration is required.
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Technology*</label>
-                                    <input class="form-control" formControlName="technology" />
-                                    <div *ngIf="course.get('technology')?.invalid && course.get('technology')?.touched"
-                                        class="text-red-500">
-                                        Technology is required.
                                     </div>
                                 </div>
 
