@@ -98,7 +98,9 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
 
   private submitDefaultReview(): void {
     this.reviewSubmitting = true;
-    this.firebaseService.saveNewData(FirebaseCollections.reviews, this.reviewForm.value).then(() => {
+    const formValue: Rating = this.reviewForm.value;
+    formValue.studentId = formValue.studentId?.trim()?.toLowerCase() ?? null;
+    this.firebaseService.saveNewData(FirebaseCollections.reviews, formValue).then(() => {
       this.reviewForm.reset();
       this.reviewSubmitting = false;
       this.addReview = false;
