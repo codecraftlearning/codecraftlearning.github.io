@@ -6,6 +6,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { from, Subscription } from 'rxjs';
 import { IStudent } from '../../interfaces/student.interface';
 import { ICertificate } from '../../interfaces/certificate.interface';
+import { IStudentLog } from '../../interfaces/studentLog.interface';
 
 @Component({
   selector: 'app-create-student-modal',
@@ -177,6 +178,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       const studentSubs: any[] = [];
       this.getFlatStudents().forEach((student: IStudent) => {
         studentSubs.push(this.firebaseService.saveNewData(FirebaseCollections.students, student, student.id));
+        this.updateStudentLog(student);
       });
       const sub = from(Promise.all(studentSubs)).subscribe({
         next: () => {
@@ -223,6 +225,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
           this.closeModal();
           this.creatingStudent = false;
           window.alert('Student updated successfully!');
+          this.updateStudentLog(studentData);
         }, error: (err) => {
           console.error('Error updating student:', err);
           this.creatingStudent = false;
@@ -234,6 +237,19 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       this.studentForm.markAllAsTouched();
       console.error('Form is invalid or student ID is missing');
     }
+  }
+
+  private updateStudentLog(student: IStudent) {
+    const studentLog: IStudentLog = {
+      id: student.id ?? '',
+      email: student.contact.email,
+      name: student.name,
+      gender: student.gender ?? '',
+      courseTitle: student.course.name === 'CUSTOM' ? (student.course.customName ?? '') : student.course.name
+    }
+    this.subscriptions.add(
+      from(this.firebaseService.saveNewData(FirebaseCollections.studentLog, studentLog, student.id)).subscribe()
+    );
   }
 
   public certifyStudent(): void {
