@@ -11,4 +11,5 @@ export interface IEnquiry {
     createdDate: Date;
     status?: EnquiryStatus; 
     notes?: string;
+    enquiryPrice?: number;
 }
