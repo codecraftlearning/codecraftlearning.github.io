@@ -85,7 +85,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       enrollmentDate: [course?.enrollmentDate || null, Validators.required],
       completionDate: [course?.completionDate || null, this.completionAfterEnrollmentValidator],
       technology: [course?.technology || [], Validators.required],
-      price: [course?.price || null, Validators.required],
+      price: [course?.price || 0, [Validators.required, Validators.min(0)]],
       instructor: [course?.instructor || '', Validators.required],
       status: [course?.status || CourseStatus.notStarted, Validators.required],
       certification: this.fb.group({

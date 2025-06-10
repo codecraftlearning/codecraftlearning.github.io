@@ -34,6 +34,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       contactNumber: [null, [Validators.required, Validators.pattern(/^\d{10}$/)]],
       packageName: [null],
       technologies: [[]],
+      enquiryPrice: [null]
     }, {
       validators: (formGroup) => {
         const packageName = formGroup.get('packageName')?.value;
@@ -75,12 +76,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.loadAllCoursePackages();
   }
 
-
-
   public packageSelected(coursePackage: CoursePackage): void {
     this.studentForm.patchValue({
       packageName: coursePackage.title,
-      technologies: []
+      technologies: [],
+      enquiryPrice: coursePackage?.discountPrice ? coursePackage.discountPrice : coursePackage.regularPrice ?? 0
     });
     this.studentForm.updateValueAndValidity();
     this.scrollTo('registrationForm');
