@@ -24,6 +24,10 @@ export class NavBarComponent implements OnDestroy {
     { name: 'Certification', path: '/pages/certification', type: 'link', fragment: '' },
     { name: 'Contact', path: '', type: 'fragment', fragment: 'contact' }
   ]
+  // Accessibility: Track dropdown state for aria-expanded
+  public get ariaExpanded(): string {
+    return this.showDropdown ? 'true' : 'false';
+  }
   private subscription: Subscription = new Subscription();
 
   constructor(private auth: Auth, private router: Router, private cdf: ChangeDetectorRef) {

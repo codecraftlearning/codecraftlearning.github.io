@@ -1,8 +1,16 @@
-<div class="flex flex-row justify-center w-screen pt-9" >
+<div class="flex flex-row justify-center w-screen pt-9">
     <div class="flex flex-col 2xl:w-[60vw] xl:w-[80vw] lg:w-[95vw] md:w-[98vw] sm:w-[98vw] xs:w-[98vw] gap-9">
-        <app-header></app-header>
-        <span class="text-sm text-red-400 font-poppins -my-6 block md:hidden lg:hiddent xl:hidden 2xl:hidden">Switch to a <b>Laptop</b> for a better experience</span>
-        <router-outlet></router-outlet>
-        <app-footer id="contact"></app-footer>
+        <header>
+            <app-header></app-header>
+        </header>
+        <span class="text-sm text-red-400 font-poppins -my-6 block md:hidden lg:hiddent xl:hidden 2xl:hidden" aria-live="polite">
+            Switch to a <b>Laptop</b> for a better experience
+        </span>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+        <footer id="contact">
+            <app-footer></app-footer>
+        </footer>
     </div>
 </div>

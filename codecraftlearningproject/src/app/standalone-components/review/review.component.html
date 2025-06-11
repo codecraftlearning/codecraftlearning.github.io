@@ -1,7 +1,7 @@
-<div class="flex flex-col w-full gap-9" *ngIf="reviews && reviews.length > 0">
-    <div class="flex flex-col text-center bg-secondary w-full py-2">
-        <span class="font-outfit text-2xl text-primary">Real Stories from Real Coders</span>
-    </div>
+<section class="flex flex-col w-full gap-9" *ngIf="reviews && reviews.length > 0" aria-label="User Reviews">
+    <header class="flex flex-col text-center bg-secondary w-full py-2">
+        <h2 class="font-outfit text-2xl text-primary">Real Stories from Real Coders</h2>
+    </header>
     <div class="flex flex-col gap-4">
         <div
             class="grid 2xl:grid-cols-2 2xl:grid-rows-2 xl:grid-cols-2 xl:grid-rows-2 lg:grid-cols-2 lg:grid-rows-2 md:grid-cols-2 md:grid-rows-2 sm:grid-cols-1 sm:grid-rows-4 xs:grid-cols-1 xs:grid-rows-4 gap-4">
@@ -9,6 +9,6 @@
         </div>
     </div>
     <div class="flex flex-row justify-center w-full">
-        <a class="button-primary-2xl" routerLink="/pages/testimonials">Checkout more reviews</a>
+        <a class="button-primary-2xl" routerLink="/pages/testimonials" aria-label="Checkout more reviews">Checkout more reviews</a>
     </div>
-</div>
+</section>

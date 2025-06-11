@@ -1,35 +1,36 @@
-<div class="w-full h-fit bg-primary mt-10 flex flex-col text-white gap-3  px-11 py-7 " *ngIf="!isLoggedIn">
+<footer class="w-full h-fit bg-primary mt-10 flex flex-col text-white gap-3  px-11 py-7" *ngIf="!isLoggedIn" aria-label="Footer">
     <div class="flex flex-row w-full">
         <div class="flex flex-col">
-            <h4 class="underline underline-offset-2 font-outfit align-middle flex gap-2"><img
-                    src="./../../../assets/images/2L2.png" alt="code craft learning icon"
-                    class="w-5 h-5 inline-block" />Code Craft Learning</h4>
-            <span class="font-poppins">An MSME-recognized initiative for quality tech education & career readiness
-            </span>
+            <h1 class="underline underline-offset-2 font-outfit align-middle flex gap-2">
+                <img src="./../../../assets/images/2L2.png" alt="Code Craft Learning logo"
+                    class="w-5 h-5 inline-block" />
+                <span>Code Craft Learning</span>
+            </h1>
+            <p class="font-poppins">An MSME-recognized initiative for quality tech education &amp; career readiness</p>
         </div>
-
     </div>
     <div class="flex sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row  gap-3 justify-between">
-        <div class="flex flex-col">
-            <h4 class="underline underline-offset-2 font-outfit flex items-center gap-2">
+        <address class="flex flex-col not-italic">
+            <h2 class="underline underline-offset-2 font-outfit flex items-center gap-2">
                 Email
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail"
+                <img src="./../../../assets/images/gmail.png" alt="Gmail icon"
                     class="w-5 h-5 inline-block" />
-            </h4>
+            </h2>
             <a class="font-poppins" href="mailto:codecraftlearning@gmail.com"
-                target="_blank">{{'codecraftlearning@gmail.com'}}</a>
-        </div>
+                target="_blank" rel="noopener noreferrer">{{'codecraftlearning@gmail.com'}}</a>
+        </address>
         <div class="flex flex-col">
-            <h4 class="underline underline-offset-2 font-outfit flex items-center gap-2">
+            <h2 class="underline underline-offset-2 font-outfit flex items-center gap-2">
                 Contact/Whatsapp
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"
+                <img src="./../../../assets/images/whatsapp.png" alt="WhatsApp icon"
                     class="w-5 h-5 inline-block" />
-            </h4>
-            <a class="font-poppins" href="https://wa.me/8971481633" target="_blank">+91 8971481633</a>
+            </h2>
+            <a class="font-poppins" href="https://wa.me/8971481633" target="_blank" rel="noopener noreferrer">+91 8971481633</a>
         </div>
-        <div class="flex flex-col w-80 opacity-75">
-            <p class="font-poppins">“The beautiful thing about learning is that no one can take it away from you.” <br>—
-                B.B. King</p>
-        </div>
+        <blockquote class="flex flex-col w-80 opacity-75 font-poppins" cite="https://en.wikipedia.org/wiki/B.B._King">
+            <p>“The beautiful thing about learning is that no one can take it away from you.”<br>
+                <cite>— B.B. King</cite>
+            </p>
+        </blockquote>
     </div>
-</div>
+</footer>
