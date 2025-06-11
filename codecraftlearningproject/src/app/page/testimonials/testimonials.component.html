@@ -1,44 +1,49 @@
-<div class="flex flex-col w-full gap-4 sm:-mt-12 xs:-mt-12">
+<div class="flex flex-col w-full gap-4 sm:-mt-12 xs:-mt-12 md:mt-0 lg:mt-0 xl:mt-0 2xl:mt-0">
     <app-loader [loading]="pageLoading"></app-loader>
     <ng-container *ngIf="!pageLoading">
 
-        <div class="flex sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between">
+        <section class="flex sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between" aria-label="Testimonials Header">
             <div class="flex flex-col w-full gap-1">
-                <h2 class="text-xl font-semibold  text-primary underline underline-offset-2 font-outfit">There is
-                    nothing
-                    more convincing than, word of mouth</h2>
-                <p class="text-lg  text-text font-poppins">Listen to what our students have to say</p>
+                <h1 class="text-xl font-semibold  text-primary underline underline-offset-2 font-outfit">
+                    There is nothing more convincing than, word of mouth
+                </h1>
+                <p class="text-lg  text-text font-poppins">
+                    Listen to what our students have to say
+                </p>
             </div>
-            <button class="button-accent-2xl" (click)="addReview = true; reviewForm.reset()">Add Review</button>
-        </div>
+            <button class="button-accent-2xl" (click)="addReview = true; reviewForm.reset()" aria-label="Add Review">
+                Add Review
+            </button>
+        </section>
 
-        <div class="flex flex-col w-full gap-4" *ngIf="reviews && reviews.length > 0; else noReviews">
+        <section class="flex flex-col w-full gap-4" *ngIf="reviews && reviews.length > 0; else noReviews" aria-label="Student Reviews">
             <app-review-card *ngFor="let review of reviews" size="lg" [review]="review"></app-review-card>
-        </div>
+        </section>
         <ng-template #noReviews>
             <div class="flex flex-col items-center justify-center py-8">
-                <p class="text-lg text-gray-500 font-poppins">No reviews yet. Be the first to <a
-                        class="text-accent cursor-pointer underline underline-offset-2" (click)="addReview = true">add
-                        one!</a></p>
+                <p class="text-lg text-gray-500 font-poppins">
+                    No reviews yet. Be the first to 
+                    <a class="text-accent cursor-pointer underline underline-offset-2" (click)="addReview = true" aria-label="Add a review">add one!</a>
+                </p>
             </div>
         </ng-template>
 
         <div *ngIf="addReview"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm w-screen h-screen">
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm w-screen h-screen"
+            role="dialog" aria-modal="true" aria-labelledby="addReviewTitle">
             <div class="relative bg-secondary rounded-lg shadow-lg p-6 min-w-[400px] w-full max-w-2xl">
-                <div
-                    class="flex flex-row justify-between w-full bg-primary py-3 px-5 text-white rounded-lg align-middle">
-                    <h3 class="text-lg font-semibold ">Add Your Review</h3>
+                <header class="flex flex-row justify-between w-full bg-primary py-3 px-5 text-white rounded-lg align-middle">
+                    <h2 id="addReviewTitle" class="text-lg font-semibold ">Add Your Review</h2>
                     <button (click)="addReview = false; isExistingStudent = false"
                         class="text-3xl font-semibold cursor-pointer hover:text-gray-300 transition-colors"
                         aria-label="Close">
                         &times;
                     </button>
-                </div>
+                </header>
                 <div class="flex justify-start">
 
                     <form [formGroup]="reviewForm" class="flex flex-col gap-4 w-full max-w-lg  p-4 rounded"
-                        (ngSubmit)="onSubmit()">
+                        (ngSubmit)="onSubmit()" aria-label="Review Form">
                         <app-loader [loading]="reviewSubmitting"></app-loader>
                         <ng-container *ngIf="!reviewSubmitting">
 
@@ -60,8 +65,8 @@
                                 </div>
                             </div>
                             <div class="flex flex-col gap-1" *ngIf="isExistingStudent">
-                                <label for="studentId" class="font-medium">Registered Email ID</label>
-                                <input id="studentId" type="text"
+                                <label for="emailId" class="font-medium">Registered Email ID</label>
+                                <input id="emailId" type="email"
                                     class="border border-primary border-1 rounded-lg bg-white px-4 py-2 text-primary"
                                     formControlName="emailId" />
                                 <div *ngIf="isInvalidEmailId" class="text-red-500 text-sm">

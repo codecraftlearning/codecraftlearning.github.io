@@ -1,18 +1,19 @@
 <div class="flex flex-col w-full gap-9">
-    <div class="flex flex-col text-center bg-secondary w-full py-2">
-        <span class="font-outfit text-2xl text-primary">Earn a Certificate That Matters</span>
-    </div>
-    <div class="flex flex-col gap-4 sm:hidden xs:hidden md:flex lg:flex xl:flex 2xl:flex">
+    <section class="flex flex-col text-center bg-secondary w-full py-2" aria-label="Certificate Section">
+        <h2 class="font-outfit text-2xl text-primary">Earn a Certificate That Matters</h2>
+    </section>
+    <section class="flex flex-col gap-4 sm:hidden xs:hidden md:flex lg:flex xl:flex 2xl:flex" aria-label="Certificates">
         <div class="flex flex-row justify-center gap-4 ">
             <app-certificate></app-certificate>
             <app-certificate></app-certificate>
         </div>
-    </div>
+    </section>
     <div class="flex flex-row justify-center">
-        <span class="text-text text-sm font-poppins">*These certifications can be validated in our websites or with the
-            QR</span>
+        <p class="text-text text-sm font-poppins">
+            *These certifications can be validated in our websites or with the QR
+        </p>
     </div>
     <div class="flex flex-row justify-center w-full">
-        <a class="button-accent-2xl" routerLink="/pages/certification">Validate A Certificate</a>
+        <a class="button-accent-2xl" routerLink="/pages/certification" aria-label="Validate a Certificate">Validate A Certificate</a>
     </div>
 </div>

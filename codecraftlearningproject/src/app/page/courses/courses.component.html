@@ -1,41 +1,49 @@
-<div class="flex flex-col gap-9 sm:-mt-16 xs:-mt-16">
+<div class="flex flex-col gap-9 sm:-mt-16 xs:-mt-16 md:mt-0 lg:mt-0 xl:mt-0 2xl:mt-0">
     <app-loader [loading]="pageLoading"></app-loader>
-    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between items-center" *ngIf="!pageLoading">
-        <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-start gap-2">
+    <section
+        class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-between items-center"
+        *ngIf="!pageLoading" aria-label="Course Package Selection">
+        <div
+            class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-start gap-2">
             <span class="text-text font-outfit text-lg underline underline-offset-2">Pick from our predefined packages
                 or</span>
-            <button class="button-accent-xs" (click)="scrollTo('registrationForm')">Create your own package</button>
+            <button class="button-accent-xs" (click)="scrollTo('registrationForm')"
+                aria-label="Create your own package">Create your own package</button>
         </div>
         <span class="text-text font-poppins text-xs">Don't worry, payment details are not required for this step</span>
-    </div>
-    <div class="grid  sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 ">
+    </section>
+    <section
+        class="grid sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4"
+        aria-label="Available Course Packages">
         <div *ngFor="let package of coursePackages" class="flex justify-center w-full">
             <app-course-package [coursePackage]="package" (courseSelected)="packageSelected($event)"
                 class="w-full"></app-course-package>
         </div>
-    </div>
-    <div class="flex flex-row justify-center w-full p-12 bg-primary rounded-lg form-section"
-        [class.hidden]="pageLoading">
-        <fieldset class="p-12 2xl:w-9/12 xl:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full xs:w-full bg-transparent rounded-lg border  border-white">
+    </section>
+    <section class="flex flex-row justify-center w-full p-12 bg-primary rounded-lg form-section"
+        [class.hidden]="pageLoading" aria-label="Registration Form">
+        <fieldset
+            class="p-12 2xl:w-9/12 xl:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full xs:w-full bg-transparent rounded-lg border border-white">
             <ng-container *ngIf="!formErrors && !formSubmitted">
                 <legend class="text-white font-outfit text-lg px-5">Basic Details</legend>
                 <form id="registrationForm" [formGroup]="studentForm" (ngSubmit)="onSubmit()"
-                    class="flex flex-col gap-6">
-                    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
+                    class="flex flex-col gap-6" aria-label="Student Registration">
+                    <div
+                        class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
                         <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
                             <label for="fullName"
                                 class="text-base font-poppins font-medium text-white w-2/3 text-nowrap">Full
                                 Name</label>
                             <div class="flex flex-col w-full">
                                 <input id="fullName" type="text" formControlName="fullName"
-                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white " />
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white"
+                                    autocomplete="name" />
                                 <div *ngIf="studentForm.get('fullName')?.invalid && studentForm.get('fullName')?.touched"
                                     class="text-red-500 text-xs">
                                     <span *ngIf="studentForm.get('fullName')?.errors?.['required']">Full Name is
                                         required.</span>
                                     <span *ngIf="studentForm.get('fullName')?.errors?.['minlength']">Minimum 3
-                                        characters
-                                        required.</span>
+                                        characters required.</span>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +51,8 @@
                             <label for="email" class="text-base font-poppins font-medium text-white w-2/3">Email</label>
                             <div class="flex flex-col w-full">
                                 <input id="email" type="email" formControlName="email"
-                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white"
+                                    autocomplete="email" />
                                 <div *ngIf="studentForm.get('email')?.invalid && studentForm.get('email')?.touched"
                                     class="text-red-500 text-xs">
                                     <span *ngIf="studentForm.get('email')?.errors?.['required']">Email is
@@ -54,12 +63,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
+                    <div
+                        class="flex flex-row sm:flex-col xs:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4 w-full justify-between">
                         <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
                             <label for="age" class="text-base font-poppins font-medium text-white w-2/3">Age</label>
                             <div class="flex flex-col w-full">
                                 <input id="age" type="number" formControlName="age"
-                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white"
+                                    autocomplete="bday" />
                                 <div *ngIf="studentForm.get('age')?.invalid && studentForm.get('age')?.touched"
                                     class="text-red-500 text-xs">
                                     <span *ngIf="studentForm.get('age')?.errors?.['required']">Age is required.</span>
@@ -74,15 +85,14 @@
                                 Number</label>
                             <div class="flex flex-col w-full">
                                 <input id="contactNumber" type="text" formControlName="contactNumber"
-                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white"
+                                    autocomplete="tel" />
                                 <div *ngIf="studentForm.get('contactNumber')?.invalid && studentForm.get('contactNumber')?.touched"
                                     class="text-red-500 text-xs">
                                     <span *ngIf="studentForm.get('contactNumber')?.errors?.['required']">Contact Number
-                                        is
-                                        required.</span>
+                                        is required.</span>
                                     <span *ngIf="studentForm.get('contactNumber')?.errors?.['pattern']">Invalid contact
-                                        number
-                                        format.</span>
+                                        number format.</span>
                                 </div>
                             </div>
                         </div>
@@ -92,11 +102,11 @@
                         <div class="flex flex-col gap-1 w-1/2 sm:w-full xs:w-full">
                             <label for="packageName"
                                 class="text-base font-poppins font-medium text-white w-2/3 text-nowrap">Select Package
-                                from
-                                above</label>
+                                from above</label>
                             <div class="flex flex-col w-full">
                                 <input readonly id="packageName" type="text" formControlName="packageName"
-                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white" />
+                                    class="border border-white border-1 rounded-lg bg-primary px-4 py-2 text-white"
+                                    aria-readonly="true" />
                                 <div *ngIf="studentForm.errors?.['packageOrTechnologiesRequired']"
                                     class="text-red-500 text-xs">
                                     Select a package or at least one technology.
@@ -116,7 +126,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="flex flex-row justify-center">
                         <button type="submit" class="button-accent-sm w-1/2 sm:w-full xs:w-full"
                             [disabled]="submittingForm">
@@ -166,5 +175,5 @@
                 </div>
             </ng-container>
         </fieldset>
-    </div>
+    </section>
 </div>
