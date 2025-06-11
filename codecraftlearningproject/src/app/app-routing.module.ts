@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: "",
-    redirectTo: 'pages/home',
+    redirectTo: 'pages',
     pathMatch: 'full'
   },
   {
@@ -20,8 +20,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
     scrollPositionRestoration: 'enabled',
-    anchorScrolling: 'enabled',
-    preloadingStrategy: PreloadAllModules 
+    anchorScrolling: 'enabled'
   })],
   exports: [RouterModule]
 })
