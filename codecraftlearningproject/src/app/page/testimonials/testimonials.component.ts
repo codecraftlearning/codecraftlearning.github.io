@@ -40,7 +40,12 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
 
   public toggleReviewAsExistingStudent() {
     this.isExistingStudent = !this.isExistingStudent;
-
+    this.reviewForm.reset();
+    this.isInvalidStudentId = false;
+    this.isInvalidEmailId = false;
+    this.reviewForm.get('studentId')?.setValue(null);
+    this.reviewForm.get('emailId')?.setValue(null);
+    this.reviewForm.updateValueAndValidity();
     if (this.isExistingStudent) {
       this.reviewForm.get('studentId')?.setValidators(Validators.required);
       this.reviewForm.get('emailId')?.setValidators([Validators.required, Validators.email]);
