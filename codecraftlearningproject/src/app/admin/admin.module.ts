@@ -11,6 +11,7 @@ import { EnquiryComponent } from './enquiry/enquiry.component';
 import { PackagesComponent } from './packages/packages.component';
 import { DropdownComponent } from '../standalone-components/dropdown/dropdown.component';
 import { TimestampPipePipe } from "../pipe/timestamp-pipe.pipe";
+import { BatchComponent } from './batch/batch.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { TimestampPipePipe } from "../pipe/timestamp-pipe.pipe";
     StudentsComponent,
     CreateStudentModalComponent,
     EnquiryComponent,
-    PackagesComponent 
+    PackagesComponent,
+    BatchComponent 
    ],
   imports: [
     CommonModule,

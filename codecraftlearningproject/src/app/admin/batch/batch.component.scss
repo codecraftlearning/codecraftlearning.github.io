@@ -1,0 +1,103 @@
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1050;
+
+    .modal-dialog {
+        background: #fff;
+        border-radius: 8px;
+        width: 70%;
+        height: 90%;
+        overflow-y: auto;
+        margin: 2rem auto;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+
+        .modal-content {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+
+            .modal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid #e9ecef;
+                background: #f8f9fa;
+
+                .modal-title {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                }
+
+                .close {
+                    background: transparent;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #333;
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: #d9534f;
+                    }
+                }
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+
+                .form-group {
+                    margin-bottom: 1.25rem;
+
+                    label {
+                        display: block;
+                        margin-bottom: 0.5rem;
+                        font-weight: 500;
+                    }
+
+                    input,
+                    select,
+                    textarea {
+                        width: 100%;
+                        padding: 0.5rem 0.75rem;
+                        border: 1px solid #ced4da;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        transition: border-color 0.2s;
+
+                        &:focus {
+                            border-color: #007bff;
+                            outline: none;
+                        }
+                    }
+
+                    .error-message {
+                        color: #d9534f;
+                        font-size: 0.875rem;
+                        margin-top: 0.25rem;
+                    }
+                }
+            }
+
+            .modal-footer {
+                display: flex;
+                justify-content: flex-end;
+                padding: 1rem 1.5rem;
+                border-top: 1px solid #e9ecef;
+                background: #f8f9fa;
+
+                button {
+                    min-width: 100px;
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+}
