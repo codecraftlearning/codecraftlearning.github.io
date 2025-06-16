@@ -20,8 +20,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
   public allStudents: IStudent[] = [];
   public filteredStudents: IStudent[] = [];
   public selectedStudent?: IStudent;
-  public courseStatus: string[] = ['', ...Object.values(CourseStatus)];
-  public certificationStatus: string[] = ['', ...Object.values(CertificationStatus)];
+  public courseStatus: string[] = Object.values(CourseStatus);
+  public certificationStatus: string[] = Object.values(CertificationStatus);
   private subscriptions: Subscription = new Subscription();
   private courses: CoursePackage[] = [];
   public filterForm: FormGroup;
@@ -96,13 +96,13 @@ export class StudentsComponent implements OnInit, OnDestroy {
             filteredStudents = filteredStudents.filter(student => student.course.name?.toLowerCase().startsWith(value.trim().toLowerCase()) || student.course.customName?.toLowerCase().startsWith(value.trim().toLowerCase()))
             break;
           case 'batchName':
-            filteredStudents = filteredStudents.filter(student => student.course.batchName?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            filteredStudents = filteredStudents.filter(student => student.course.batchName === value);
             break;
           case 'courseStatus':
-            filteredStudents = filteredStudents.filter(student => student.course.status?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            filteredStudents = filteredStudents.filter(student => student.course.status === value);
             break;
           case 'certificationStatus':
-            filteredStudents = filteredStudents.filter(student => student.course.certification?.certificationStatus?.toLowerCase().startsWith(value.trim().toLowerCase()))
+            filteredStudents = filteredStudents.filter(student => student.course.certification?.certificationStatus === value);
             break;
         }
       }
