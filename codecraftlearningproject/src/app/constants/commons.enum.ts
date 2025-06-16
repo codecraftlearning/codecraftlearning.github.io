@@ -22,6 +22,7 @@ export enum FirebaseCollections {
     enquiries = 'enquiries',
     reviews = 'reviews',
     certificates = 'certificates',
+    batches = 'batches',
 }
 
 export enum Gender {
@@ -52,4 +53,21 @@ export enum EnquiryStatus {
     contacted = 'contacted',
     cancelled = 'cancelled',
     confirmed = 'confirmed'
+}
+
+export enum WeekDays {
+    Monday = 'Monday',
+    Tuesday = 'Tuesday',
+    Wednesday = 'Wednesday',
+    Thursday = 'Thursday',
+    Friday = 'Friday',
+    Saturday = 'Saturday',
+    Sunday = 'Sunday'
+}
+
+export enum BatchStatus {
+    notStarted = 'not-started',
+    inProgress = 'in-progress',
+    completed = 'completed',
+    cancelled = 'cancelled'
 }

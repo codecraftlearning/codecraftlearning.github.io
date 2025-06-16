@@ -4,6 +4,7 @@ import { StudentsComponent } from './students/students.component';
 import { adminGuard } from './guard/admin.guard';
 import { EnquiryComponent } from './enquiry/enquiry.component';
 import { PackagesComponent } from './packages/packages.component';
+import { BatchComponent } from './batch/batch.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'packages',
     component: PackagesComponent,
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'batches',
+    component: BatchComponent,
     canActivate: [adminGuard]
   }
 ];

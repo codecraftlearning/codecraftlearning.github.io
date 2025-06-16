@@ -7,6 +7,7 @@ import { IStudent } from '../../interfaces/student.interface';
 import { ActivatedRoute } from '@angular/router';
 import { IEnquiry } from '../../interfaces/enquiries.interface';
 import { CoursePackage } from '../../interfaces/course-package.interface';
+import { IBatch } from '../../interfaces/batch.interface';
 
 @Component({
   selector: 'app-students',
@@ -24,6 +25,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private courses: CoursePackage[] = [];
   public filterForm: FormGroup;
+  public availableBatches: IBatch[] = [];
 
   constructor(private firebaseService: FirebaseService, private activatedRoute: ActivatedRoute, private fb: FormBuilder) {
     this.filterForm = this.fb.group({
@@ -45,7 +47,24 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.loadAllStudents();
     this.loadParams();
     this.filterFormChange();
+    this.loadAllBatches();
   }
+
+  public loadAllBatches() {
+    this.subscriptions.add(
+      this.firebaseService.getAllFromCollection(FirebaseCollections.batches).subscribe((batches: IBatch[]) => {
+        this.availableBatches = batches
+      })
+    );
+  }
+
+  public getBatchName(batchId?: string): string {
+    if (!batchId) {
+      return 'N/A';
+    }
+    const batch = this.availableBatches.find(b => b.id === batchId); 
+    return batch ? batch.name : 'N/A';}
+
 
   private filterFormChange() {
     const sub = this.filterForm.valueChanges.subscribe(() => {

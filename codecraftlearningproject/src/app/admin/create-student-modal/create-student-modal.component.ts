@@ -7,6 +7,7 @@ import { from, Subscription } from 'rxjs';
 import { IStudent, IStudentCourse } from '../../interfaces/student.interface';
 import { ICertificate } from '../../interfaces/certificate.interface';
 import { IStudentLog } from '../../interfaces/studentLog.interface';
+import { IBatch } from '../../interfaces/batch.interface';
 
 @Component({
   selector: 'app-create-student-modal',
@@ -39,6 +40,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
   public certificationTypeList = Object.values(CertificationType);
   public studentForm: FormGroup;
   public creatingStudent: boolean = false;
+  public availableBatches: IBatch[] = [];
 
   private subscriptions: Subscription = new Subscription();
 
@@ -66,6 +68,20 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadAllCourses();
+    this.loadAllBatches();
+  }
+
+  public loadAllBatches() {
+    this.subscriptions.add(
+      this.firebaseService.getAllFromCollection(FirebaseCollections.batches).subscribe((batches: IBatch[]) => {
+        this.availableBatches = batches
+      })
+    );
+  }
+
+  public getBatch( batchId?: string): IBatch | null {
+    const batch = this.availableBatches.find(b => b.id === batchId);
+    return batch ? batch : null;
   }
 
   public get courses(): FormArray {
@@ -156,10 +172,11 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
 
   private batchNameValueChanges(courseGroup: FormGroup) {
 
-    const sub = courseGroup.controls['batchName'].valueChanges.subscribe(() => {
-      if (courseGroup.controls['status'].value === CourseStatus.notStarted) {
+    const sub = courseGroup.controls['batchName'].valueChanges.subscribe((id: string) => {
+      if (courseGroup.controls['status'].value === CourseStatus.notStarted || courseGroup.controls['status'].value === CourseStatus.inProgress) {
         courseGroup.patchValue({
-          status: CourseStatus.inProgress
+          status: CourseStatus.inProgress,
+          instructor: this.getBatch(id)?.instructorName || ''
         });
         courseGroup.updateValueAndValidity();
       }

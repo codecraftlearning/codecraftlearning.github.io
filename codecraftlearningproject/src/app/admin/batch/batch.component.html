@@ -1,0 +1,185 @@
+<div class="flex flex-col gap-2 absolute left-0 px-10  w-full -mt-6">
+    <div class="flex flex-row w-full justify-center border border-primary rounded-lg">
+
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
+            <caption
+                class="text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 px-4 py-1 text-left rounded-lg ">
+                <div class="flex flex-row gap-6 items-center h-10 justify-between">
+                    <span>Batch List</span>
+                    <button class="button-primary-xs" (click)="openBatchModal()">+ Create Batch</button>
+                </div>
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="table-row">
+                    <th scope="col" class="px-6 py-3 text-primary">Id</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Name</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Instructor</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Strength</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Start Date</th>
+                    <th scope="col" class="px-6 py-3 text-primary">End Date</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Status</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Weekly Schedule</th>
+                    <th scope="col" class="px-6 py-3 text-primary">Description</th>
+                    <th scope="col" class="px-6 py-3 text-primary"></th>
+                </tr>
+            </thead>
+            <tbody class="">
+                <ng-container *ngFor="let batch of batches; let i=index">
+                    <tr
+                        class="py-2 h-5 text-xs font-poppins 
+                        bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-text hover:outline hover:outline-1 hover:outline-black hover:bg-yellow-50">
+                        <td class="px-6 py-3 text-text">{{batch.id}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.name}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.instructorName}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.strength}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.startDate}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.endDate}}</td>
+                        <td class="px-6 py-3 text-text">{{batch.status}}</td>
+                        <td class="px-6 py-3 text-text">
+                            <span *ngFor="let schedule of getFormattedSchedule(batch.weeklySchedule)">{{schedule}}
+                                <br></span>
+                        </td>
+                        <td class="px-6 py-3 text-text">{{batch.description}}</td>
+                        <td class="px-6 text-center">
+                            <a class="text-blue underline underline-offset-2 cursor-pointer"
+                                (click)="openBatch(batch)">View</a>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Backdrop -->
+<div *ngIf="showModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">{{!!selectedBatch ? 'Update' : 'Create'}} Batch</span>
+                <button class="close" (click)="showModal = false" aria-label="Close">&times;</button>
+            </div>
+            <form [formGroup]="batchForm">
+                <div class="modal-body">
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="form-group pointer-events-none">
+                            <label>Id</label>
+                            <input class="bg-slate-300" formControlName="id" readonly />
+                            <div *ngIf="batchForm.get('id')?.touched && batchForm.get('id')?.invalid"
+                                class="error-message">
+                                Id is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input formControlName="name" />
+                            <div *ngIf="batchForm.get('name')?.touched && batchForm.get('name')?.invalid"
+                                class="error-message">
+                                Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group pointer-events-none">
+                            <label>Status</label>
+                            <input class="bg-slate-300" formControlName="status" readonly />
+                            <div *ngIf="batchForm.get('status')?.touched && batchForm.get('status')?.invalid"
+                                class="error-message">
+                                Status is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-8">
+
+                        <div class="form-group">
+                            <label>Instructor</label>
+                            <input formControlName="instructorName" />
+                            <div *ngIf="batchForm.get('instructorName')?.touched && batchForm.get('instructorName')?.invalid"
+                                class="error-message">
+                                Instructor is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" formControlName="startDate" />
+                            <div *ngIf="batchForm.get('startDate')?.touched && batchForm.get('startDate')?.invalid"
+                                class="error-message">
+                                Start date is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" formControlName="endDate" />
+                            <div *ngIf="batchForm.get('endDate')?.touched && batchForm.get('endDate')?.invalid"
+                                class="error-message">
+                                End date is required.
+                            </div>
+                            <div *ngIf="batchForm.errors?.['endDateBeforeStartDate'] && (batchForm.get('endDate')?.touched || batchForm.get('startDate')?.touched)"
+                                class="error-message">
+                                End date cannot be before start date.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input formControlName="description" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="flex flex-row gap-4 mb-3 items-center">
+                            <label>Weekly Schedule
+                            </label>
+                            <button
+                                class="text-lg font-poppins text-black border border-1 rounded-lg ml-3 bg-secondary px-3 py-1 hover:bg-white"
+                                (click)="addSchedule()">+
+                                Add Day
+                            </button>
+                        </div>
+                        <div formArrayName="weeklySchedule">
+                            <div *ngFor="let schedule of weeklySchedule['controls']; let i = index" [formGroupName]="i"
+                                class="grid grid-cols-4 gap-8 mb-2">
+                                <div>
+                                    <select formControlName="day" class="form-select">
+                                        <option value="" disabled selected>Select Day</option>
+                                        <option *ngFor="let day of weekDays" [value]="day">{{ day }}</option>
+                                    </select>
+                                    <div *ngIf="schedule.get('day')?.touched && schedule.get('day')?.invalid"
+                                        class="error-message">
+                                        Day is required.
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="time" formControlName="startTime" placeholder="Start Time" />
+                                    <div *ngIf="schedule.get('startTime')?.touched && schedule.get('startTime')?.invalid"
+                                        class="error-message">
+                                        Start Time is required.
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="time" formControlName="endTime" placeholder="End Time" />
+                                    <div *ngIf="schedule.get('endTime')?.touched && schedule.get('endTime')?.invalid"
+                                        class="error-message">
+                                        End Time is required.
+                                    </div>
+                                    <div *ngIf="schedule.errors?.['endTimeBeforeStartTime'] && (schedule.get('endTime')?.touched || schedule.get('startTime')?.touched)"
+                                        class="error-message">
+                                        End time cannot be before start time.
+                                    </div>
+                                </div>
+                                <button *ngIf="weeklySchedule.length > 1"
+                                    class="text-lg font-poppins text-black border border-1 rounded-lg ml-3 bg-red-200 px-3 py-1 hover:bg-red-400"
+                                    (click)="removeSchedule(i)">
+                                    - Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button-secondary-xs" (click)="showModal = false">Cancel</button>
+                    <button type="button" class="button-primary-xs" (click)="onSubmit()">{{!!selectedBatch ? 'Update' :
+                        'Create'}}</button>
+                    <button type="button" class="button-primary-xs bg-red-400" (click)="removeBatch()"
+                        *ngIf="selectedBatch">Remove Batch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
