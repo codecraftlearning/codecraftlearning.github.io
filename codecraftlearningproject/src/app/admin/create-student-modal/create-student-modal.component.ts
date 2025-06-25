@@ -77,7 +77,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
   }
 
   public get showKycButton(): boolean {
-    return !this.studentForm.get('aadharNumber')?.value && this.isEditMode;
+    return !this.studentForm.get('aadharNumber')?.value && this.isEditMode && this.studentForm.get('course')?.value[0]?.status !== CourseStatus.completed;
   }
 
   private loadConfiguration() {
@@ -263,10 +263,6 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     });
 
     return students;
-  }
-
-  public startKyc(): void {
-
   }
 
   public updateStudent() {
