@@ -8,6 +8,9 @@ import { IStudent, IStudentCourse } from '../../interfaces/student.interface';
 import { ICertificate } from '../../interfaces/certificate.interface';
 import { IStudentLog } from '../../interfaces/studentLog.interface';
 import { IBatch } from '../../interfaces/batch.interface';
+import { IConfiguration } from '../../interfaces/configuration.interface';
+import emailJs from '@emailjs/browser';
+import { IOnboardingEmail } from '../../interfaces/onboarding-email.interface';
 
 @Component({
   selector: 'app-create-student-modal',
@@ -41,7 +44,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
   public studentForm: FormGroup;
   public creatingStudent: boolean = false;
   public availableBatches: IBatch[] = [];
-
+  public configuration: IConfiguration = {};
   private subscriptions: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private firebaseService: FirebaseService) {
@@ -50,6 +53,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       age: [null, [Validators.required, Validators.min(1)]],
       gender: ['', Validators.required],
+      aadharNumber: [null, [Validators.pattern('^[0-9]{12}$')]], // Assuming Aadhar is a 12-digit number
       contact: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
         phone: ['', Validators.required],
@@ -67,8 +71,21 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadConfiguration();
     this.loadAllCourses();
     this.loadAllBatches();
+  }
+
+  public get showKycButton(): boolean {
+    return !this.studentForm.get('aadharNumber')?.value && this.isEditMode;
+  }
+
+  private loadConfiguration() {
+    this.subscriptions.add(
+      this.firebaseService.getAllFromCollection(FirebaseCollections.configurations).subscribe((configurations: IConfiguration[]) => {
+        this.configuration = configurations && configurations.length > 0 ? configurations[0] : {};
+      })
+    )
   }
 
   public loadAllBatches() {
@@ -79,7 +96,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     );
   }
 
-  public getBatch( batchId?: string): IBatch | null {
+  public getBatch(batchId?: string): IBatch | null {
     const batch = this.availableBatches.find(b => b.id === batchId);
     return batch ? batch : null;
   }
@@ -183,7 +200,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(sub);
   }
-  
+
   public removeTechAt(courseControl: AbstractControl, index: number): void {
     const value: string[] = courseControl.get('technology')?.value ?? [];
     if (value.length === 1) {
@@ -215,6 +232,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       });
       const sub = from(Promise.all(studentSubs)).subscribe({
         next: () => {
+          this.sendOnboardingEmail();
           this.closeModal();
           this.creatingStudent = false;
           window.alert('Student created successfully!');
@@ -245,6 +263,10 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     });
 
     return students;
+  }
+
+  public startKyc(): void {
+
   }
 
   public updateStudent() {
@@ -363,6 +385,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
 
     return prefix + suffix;
   }
+
   public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -377,7 +400,6 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
     return false;
   }
 
-
   public get isCertified(): boolean {
     return this.studentForm.get('course')?.value[0]?.certification?.certificationStatus === CertificationStatus.certified;
   }
@@ -391,5 +413,34 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       return { completionBeforeEnrollment: true };
     }
     return null;
+  }
+
+  public sendOnboardingEmail(): void {
+    const student = this.studentForm.value;
+    student.course = student.course[0];
+
+    if (!this.configuration.email || !this.configuration.email.serviceId || !this.configuration.email.publicKey) {
+      console.warn('Email configuration is not set.');
+      return;
+    }
+
+    const onboardingEmailData: IOnboardingEmail = {
+      studentId: student.id || '',
+      studentName: student.name || '',
+      email: student.contact.email || '',
+      courseTitle: student.course.name === 'CUSTOM' ? (student.course.customName || '') : student.course.name,
+      technologiesCovered: student.course.technology.join(', ') || '',
+      duration: `${student.course.defaultDuration} months`,
+      price: student.course.price ?? 0
+    };
+
+    emailJs.send(
+      this.configuration.email.serviceId,
+      this.configuration.email.onboardingTemplateId,
+      onboardingEmailData as any,
+      this.configuration.email.publicKey
+    ).then(() => {
+      window.alert('Onboarding email sent successfully.');
+    });
   }
 }

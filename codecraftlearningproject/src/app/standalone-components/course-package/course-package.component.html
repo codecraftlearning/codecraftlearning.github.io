@@ -9,7 +9,7 @@
                 class="flex flex-col justify-between items-center text-center align-center bg-secondary">
                 <div class="flex flex-row w-full justify-evenly h-fit gap-1">
                     <ng-container *ngFor="let icon of getIconUrl(techItem)">
-                        <img *ngIf="icon.length" [src]="icon" [alt]="getName(techItem) + ' icon'"
+                        <img *ngIf="icon.length" [src]="icon" [alt]="getIconAlt(techItem)"
                             class="h-10 w-10 object-cover overflow-clip icon-position" loading="lazy">
                     </ng-container>
                 </div>

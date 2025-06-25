@@ -6,7 +6,7 @@
         @for (images of technologiesImages; track $index) {
             <div class="flex flex-row w-full justify-between">
                 @for (image of images; track $index) {
-                    <img [src]="image" alt="Technology logo" class="h-14 w-14 object-cover overflow-clip" loading="lazy"/>
+                    <img [src]="image.url" [alt]="image.alt" class="h-14 w-14 object-cover overflow-clip" loading="lazy"/>
                 }
             </div>
         }

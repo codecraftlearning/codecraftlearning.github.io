@@ -23,6 +23,7 @@ export enum FirebaseCollections {
     reviews = 'reviews',
     certificates = 'certificates',
     batches = 'batches',
+    configurations = 'configurations',
 }
 
 export enum Gender {
