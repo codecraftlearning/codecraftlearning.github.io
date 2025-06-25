@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
-    "build": "ng build --configuration production  && copy robot.txt dist\\codecraftlearning\\browser\\robot.txt && copy CNAME dist\\codecraftlearning\\browser\\CNAME && copy dist\\codecraftlearning\\browser\\index.html dist\\codecraftlearning\\browser\\404.html" ,
+    "build": "ng build --configuration production  && copy robot.txt dist\\codecraftlearning\\browser\\robot.txt && copy CNAME dist\\codecraftlearning\\browser\\CNAME && copy dist\\codecraftlearning\\browser\\index.html dist\\codecraftlearning\\browser\\404.html",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
+    "@emailjs/browser": "^4.4.1",
     "angular-cli-ghpages": "^2.0.3",
     "angularx-qrcode": "^19.0.0",
     "date-fns": "^4.1.0",

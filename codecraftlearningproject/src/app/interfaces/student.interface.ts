@@ -5,6 +5,7 @@ export interface IStudent {
     name: string;
     age?: number;
     gender?: Gender;
+    aadharNumber?: string;
     contact: IStudentContact;
     address?: IStudentAddress;
     course: IStudentCourse;

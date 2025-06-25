@@ -55,7 +55,11 @@ export class CoursePackageComponent implements OnInit {
   }
   
   public getIconUrl(tech: CoursePackageTechnology): string[] {
-      return !tech.isPackage && tech.name ? tech.name?.map(n => this.icons[n] || '') : [];
+      return !tech.isPackage && tech.name ? tech.name?.map(n => this.icons[n].url || '') : [];
+  }
+
+  public getIconAlt(tech: CoursePackageTechnology): string[] {
+    return !tech.isPackage && tech.name ? tech.name?.map(n => this.icons[n].alt || '') : [];
   }
 
   public getTextStyle(tech: CoursePackageTechnology): string {

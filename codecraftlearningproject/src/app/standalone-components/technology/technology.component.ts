@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TECHNOLOGY_IMAGES } from '../../constants/common.constants';
 
 @Component({
   selector: 'app-technology',
@@ -10,30 +11,27 @@ import { RouterModule } from '@angular/router';
 })
 export class TechnologyComponent {
 
-  public technologiesImages: string[][] = [
-    [
-      'assets/tech-images/angular.png',
-      'assets/tech-images/cicd.png',
-      'assets/tech-images/css.png',
-      'assets/tech-images/design-pattern.png',
-      'assets/tech-images/docker.png',
-      'assets/tech-images/express.png'
-    ],
-    [
-      'assets/tech-images/git.png',
-      'assets/tech-images/html.png',
-      'assets/tech-images/java.png',
-      'assets/tech-images/js.png',
-      'assets/tech-images/kubernetes.png',
-      'assets/tech-images/microservices.png'
-    ],
-    [
-      'assets/tech-images/nodejs.png',
-      'assets/tech-images/nosql.png',
-      'assets/tech-images/os.png',
-      'assets/tech-images/python.png',
-      'assets/tech-images/react.png',
-      'assets/tech-images/spring-boot.png'
-    ]
-  ];
+  public technologiesImages: { url: string; alt: string }[][] = [];
+
+  constructor() {
+    this.getTechnologiesImages()
+  }
+  
+  private getTechnologiesImages(): void {
+    const list = Object.keys(TECHNOLOGY_IMAGES);
+    let currentSize = 0;
+    const maxSize = 6;
+    let currentIndex = 0;
+    list.forEach((key, index) => {
+      if (currentSize === 0) {
+        this.technologiesImages.push([]);
+      }
+      this.technologiesImages[currentIndex].push(TECHNOLOGY_IMAGES[key]);
+      currentSize++;
+      if (currentSize === maxSize || index === list.length - 1) {
+        currentIndex++;
+        currentSize = 0;
+      }
+    }); 
+  }
 }

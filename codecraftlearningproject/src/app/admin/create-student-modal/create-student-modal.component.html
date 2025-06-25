@@ -7,6 +7,7 @@
                     <h5 class="modal-title" *ngIf="isEditMode">Update Student - {{studentForm.get('id')?.value}}</h5>
                     <button class="button-accent-sm" *ngIf="isReadyToCertify" (click)="certifyStudent()">Verified and
                         Certify</button>
+                    <button class="button-accent-sm" *ngIf="!studentForm.get('aadharNumber')?.value" (click)="sendOnboardingEmail()">Send Onboarding Email</button>
                 </div>
                 <button type="button" class="close" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
@@ -14,7 +15,7 @@
             </div>
             <form [formGroup]="studentForm">
                 <div class="modal-body" [class.hidden]="creatingStudent">
-                    <div class="grid grid-cols-3 gap-8">
+                    <div class="grid grid-cols-4 gap-8">
 
                         <div class="form-group">
                             <label>Full Name*</label>
@@ -45,6 +46,16 @@
                             <div *ngIf="studentForm.get('gender')?.invalid && studentForm.get('gender')?.touched"
                                 class="text-red-500">
                                 Gender is required.
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>AAdhar Number</label>
+                            <input class="form-control" formControlName="aadharNumber" />
+                            <div *ngIf="studentForm.get('aadharNumber')?.invalid && studentForm.get('aadharNumber')?.touched"
+                                class="text-red-500">
+                               Invalid Aadhar Number.
                             </div>
                         </div>
                     </div>
@@ -128,14 +139,17 @@
                                     (click)="courses.removeAt(i)"> - Remove Course</button>
                             </div>
                             <div class="grid grid-cols-2 gap-8">
-                                <div class="form-group">
+                                <div class="form-group" >
                                     <label>Batch name</label>
-                                    <select class="form-control" formControlName="batchName">
+                                    <select class="form-control" formControlName="batchName" [class.disabled]="!studentForm.get('aadharNumber')?.value">
                                         <option value="">Select Batch</option>
                                         <option *ngFor="let batch of availableBatches" [value]="batch.id">{{ batch.name }}</option>
                                     </select>
+                                    <div *ngIf="!studentForm.get('aadharNumber')?.value"
+                                        class="text-red-500">
+                                        Add aadhar number to assign a batch.
+                                    </div>
                                 </div>
-
                             </div>
                             <div
                                 class="form-group flex flex-col w-full mb-3 border border-dotted border-1 border-black px-4 py-1">
