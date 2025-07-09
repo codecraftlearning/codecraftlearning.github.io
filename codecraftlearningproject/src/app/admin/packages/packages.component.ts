@@ -4,6 +4,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { from, Subscription } from 'rxjs';
 import { FirebaseCollections } from '../../constants/commons.enum';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { TechnologyItems } from '../../interfaces/technology-items';
 
 @Component({
   selector: 'app-packages',
@@ -19,8 +20,14 @@ export class PackagesComponent implements OnInit {
   public isOpen: boolean = false;
   private subscription: Subscription = new Subscription();
   public packageForm: FormGroup;
-  public availableTechnologies: string[] = [];
+  public technologyForm: FormGroup;
+  public availableTechnologies: TechnologyItems[] = [];
+  public technologyMap: { [key: string]: TechnologyItems } = {};
   public packageProcessing: boolean = false;
+  public techProcessing: boolean = false;
+  public technologyModalOpen: boolean = false;
+  public addingNewTech: boolean = false;
+
   constructor(private firebaseService: FirebaseService, private fb: FormBuilder) {
     this.packageForm = this.fb.group({
       index: [null, [Validators.required, Validators.min(0)]],
@@ -31,6 +38,15 @@ export class PackagesComponent implements OnInit {
       durationInMonth: [null, [Validators.required, Validators.min(1)]],
       allTechItems: [[]],
       technologies: this.fb.array([])
+    });
+
+    this.technologyForm = this.fb.group({
+      id: [null],
+      name: [null, Validators.required],
+      fullName: [null, Validators.required],
+      description: [null, Validators.required],
+      iconUrl: [null, Validators.required],
+      altText: [null, Validators.required]
     });
   }
 
@@ -128,7 +144,7 @@ export class PackagesComponent implements OnInit {
     if (tech.get('isPackage')?.value) {
       return `${tech.get('packages')?.value?.map((t: any) => t.title)?.join(' ' + tech.get('combinationBy')?.value + ' ')}`;
     }
-    return `${tech.get('techs')?.value?.join(' ' + tech.get('combinationBy')?.value + ' ')}`;
+    return `${tech.get('techs')?.value.map((item: string) => this.technologyMap[item]?.name)?.join(' ' + tech.get('combinationBy')?.value + ' ')}`;
   }
 
   public resetTechs(tech: AbstractControl) {
@@ -188,8 +204,7 @@ export class PackagesComponent implements OnInit {
         const packageTech: CoursePackageTechnology = {
           name: tech.packages.map((pkg: any) => pkg.title),
           isPackage: true,
-          combinationBy: tech.combinationBy,
-          iconUrl: []
+          combinationBy: tech.combinationBy
         };
         tech.packages.forEach((pkg: any) => {
           pkg.allTechItems.forEach((item: string) => {
@@ -201,11 +216,10 @@ export class PackagesComponent implements OnInit {
         const packageTech: CoursePackageTechnology = {
           name: tech.techs,
           isPackage: false,
-          combinationBy: tech.combinationBy,
-          iconUrl: []
+          combinationBy: tech.combinationBy
         };
         tech.techs.forEach((item: string) => {
-          allTechItemsSet.add(item);
+          allTechItemsSet.add(this.technologyMap[item].name);
         });
         technologies.push(packageTech);
       }
@@ -213,7 +227,10 @@ export class PackagesComponent implements OnInit {
     newPackage.technologies = technologies;
     newPackage.allTechItems = Array.from(allTechItemsSet);
     this.subscription.add(
-      from(this.firebaseService.saveNewData(FirebaseCollections.coursePackages, newPackage)).subscribe({
+      from(
+        !this.selectedPackage ? this.firebaseService.saveNewData(FirebaseCollections.coursePackages, newPackage)
+        : this.firebaseService.updateData(FirebaseCollections.coursePackages, this.selectedPackage.id || '', newPackage)
+      ).subscribe({
         next: () => {
           window.alert('Package created successfully');
           this.fetchPackages();
@@ -229,13 +246,12 @@ export class PackagesComponent implements OnInit {
   }
 
   private loadAllTechnologies(): void {
-    const techs: Set<string> = new Set<string>();
-    this.packages.forEach((coursePackage: CoursePackage) => {
-      coursePackage.allTechItems.forEach((tech) => {
-        techs.add(tech);
+    this.firebaseService.getAllFromCollection(FirebaseCollections.technologies).subscribe((techs: any[]) => {
+      this.availableTechnologies = techs.sort((a, b) => a.name.localeCompare(b.name));
+      this.availableTechnologies.forEach((tech: TechnologyItems) => {
+        this.technologyMap[tech.id] = tech;
       });
     });
-    this.availableTechnologies = Array.from(techs);
 
   }
 
@@ -256,5 +272,103 @@ export class PackagesComponent implements OnInit {
         }
       })
     );
+  }
+
+  public createNewTechnology() {
+    this.closeCourse();
+    this.technologyModalOpen = true;
+    this.technologyForm.reset();
+    this.technologyForm.setValue({
+      id: null,
+      name: null,
+      fullName: null,
+      description: null,
+      iconUrl: null,
+      altText: null
+    });
+    this.technologyForm.updateValueAndValidity();
+  }
+
+  public saveTechnology() {
+    if (this.technologyForm.invalid) {
+      this.technologyForm.markAllAsTouched();
+      return;
+    }
+    this.techProcessing = true;
+    const techData: TechnologyItems = this.technologyForm.value;
+    const updatingTech: boolean = !!techData.id;
+    
+    this.subscription.add(
+      from(
+        !updatingTech ? this.firebaseService.saveNewData(FirebaseCollections.technologies, techData) 
+        : this.firebaseService.updateData(FirebaseCollections.technologies, techData.id, techData)
+      ).subscribe({
+        next: () => {
+          window.alert('Technology saved successfully');
+          this.techProcessing = false;
+          this.addingNewTech = false;
+          this.loadAllTechnologies();
+
+        },
+        error: (error) => {
+          console.error('Error saving technology:', error);
+          window.alert('Error saving technology');
+          this.techProcessing = false;
+        }
+      })
+    );
+  }
+
+  public editTechnology(tech: TechnologyItems) {
+    this.technologyModalOpen = true;
+    this.technologyForm.reset();
+    this.technologyForm.setValue({
+      id: tech.id,
+      name: tech.name,
+      fullName: tech.fullName,
+      description: tech.description,
+      iconUrl: tech.iconUrl,
+      altText: tech.altText
+    });
+    this.technologyForm.updateValueAndValidity();
+    this.addingNewTech = true;
+  }
+
+  public deleteTechnology(tech: TechnologyItems) {
+    if (confirm(`Are you sure you want to delete the technology: ${tech.name}?`)) {
+      this.techProcessing = true;
+      this.subscription.add(
+        from(this.firebaseService.deleteData(FirebaseCollections.technologies, tech.id)).subscribe({
+          next: () => {
+            window.alert('Technology deleted successfully');
+            this.loadAllTechnologies();
+            this.techProcessing = false;
+          },
+          error: (error) => {
+            console.error('Error deleting technology:', error);
+            window.alert('Error deleting technology');
+            this.techProcessing = false;
+          }
+        })
+      );
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  public clearTechForm() {
+    this.technologyForm.reset();
+    this.technologyForm.setValue({
+      id: null,
+      name: null,
+      fullName: null,
+      description: null,
+      iconUrl: null,
+      altText: null
+    });
+    this.technologyForm.updateValueAndValidity();
+    this.addingNewTech = false;
   }
 }

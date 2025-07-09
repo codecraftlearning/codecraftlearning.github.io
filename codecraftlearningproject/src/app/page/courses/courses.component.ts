@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EnquiryStatus, FirebaseCollections } from '../../constants/commons.enum';
 import { CoursePackage } from '../../interfaces/course-package.interface';
-import { FirebaseService } from '../../services/firebase.service';
 import { IEnquiry } from '../../interfaces/enquiries.interface';
+import { FirebaseService } from '../../services/firebase.service';
+import { TechnologyItems } from '../../interfaces/technology-items';
 
 @Component({
   selector: 'app-courses',
@@ -16,7 +17,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   public coursePackages: CoursePackage[] = []
   private subscriptions: Subscription = new Subscription();
-  public availableTechnologies: string[] = [];
+  public availableTechnologies: TechnologyItems[] = [];
 
   public studentForm: FormGroup;
 
@@ -120,13 +121,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   private loadAllTechnologies(): void {
-    const techs: Set<string> = new Set<string>();
-    this.coursePackages.forEach((coursePackage: CoursePackage) => {
-      coursePackage.allTechItems.forEach((tech) => {
-        techs.add(tech);
-      });
+    this.firebaseService.getAllFromCollection(FirebaseCollections.technologies).subscribe((tech: TechnologyItems[]) => {
+      this.availableTechnologies = Array.from(tech);
     });
-    this.availableTechnologies = Array.from(techs);
   }
 
   private changeActions(): void {

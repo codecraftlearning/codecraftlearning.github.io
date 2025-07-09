@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CoursePackage, CoursePackageTechnology } from '../../interfaces/course-package.interface';
 import { CommonModule } from '@angular/common';
-import { TECHNOLOGY_IMAGES } from '../../constants/common.constants';
+import { TechnologyItems } from '../../interfaces/technology-items';
 
 @Component({
   selector: 'app-course-package',
-  standalone : true,
+  standalone: true,
   imports: [
     CommonModule
   ],
@@ -17,7 +17,14 @@ export class CoursePackageComponent implements OnInit {
   public coursePackage!: CoursePackage;
   @Output()
   public courseSelected: EventEmitter<CoursePackage> = new EventEmitter<CoursePackage>();
-  public icons = TECHNOLOGY_IMAGES;
+  @Input()
+  public set icons(items: TechnologyItems[]) {
+    items.forEach(icon => {
+      this.techMap[icon.id] = icon;
+    });
+  };
+
+  public techMap: { [key: string]: TechnologyItems } = {};
   public techs: CoursePackageTechnology[][] = [];
 
   public ngOnInit(): void {
@@ -49,17 +56,24 @@ export class CoursePackageComponent implements OnInit {
 
   public getName(tech: CoursePackageTechnology): string {
     if (Array.isArray(tech.name)) {
-      return tech.name.join(' ' + tech.combinationBy + ' ');
+      return !tech.isPackage && tech.name ? tech.name.map(t => this.techMap[t]?.name).join(' ' + tech.combinationBy + ' ') : tech.name.join(' ' + tech.combinationBy + ' ');
     }
     return tech.name;
   }
-  
+
+  public getTechItem(tech: CoursePackageTechnology): TechnologyItems[] {
+    if (!tech.isPackage) {
+      return tech.name ? tech.name.map(n => this.techMap[n] || null).filter(t => t !== null) : [];
+    }
+    return [];
+  }
+
   public getIconUrl(tech: CoursePackageTechnology): string[] {
-      return !tech.isPackage && tech.name ? tech.name?.map(n => this.icons[n].url || '') : [];
+    return !tech.isPackage && tech.name ? tech.name?.map(n => this.techMap[n]?.iconUrl || '') : [];
   }
 
   public getIconAlt(tech: CoursePackageTechnology): string[] {
-    return !tech.isPackage && tech.name ? tech.name?.map(n => this.icons[n].alt || '') : [];
+    return !tech.isPackage && tech.name ? tech.name?.map(n => this.techMap[n]?.altText || '') : [];
   }
 
   public getTextStyle(tech: CoursePackageTechnology): string {

@@ -1,6 +1,5 @@
 export interface CoursePackageTechnology {
     name: string[];
-    iconUrl: string[];
     isPackage: boolean;
     combinationBy: '+' | '/' | '';
 }

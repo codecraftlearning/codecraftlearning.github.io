@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TECHNOLOGY_IMAGES } from '../../constants/common.constants';
+import { FirebaseCollections } from '../../constants/commons.enum';
+import { TechnologyItems } from '../../interfaces/technology-items';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-technology',
@@ -11,27 +13,28 @@ import { TECHNOLOGY_IMAGES } from '../../constants/common.constants';
 })
 export class TechnologyComponent {
 
-  public technologiesImages: { url: string; alt: string }[][] = [];
+  public technologiesImages: TechnologyItems[][] = [];
 
-  constructor() {
+  constructor(private firebaseService: FirebaseService) {
     this.getTechnologiesImages()
   }
-  
+
   private getTechnologiesImages(): void {
-    const list = Object.keys(TECHNOLOGY_IMAGES);
-    let currentSize = 0;
-    const maxSize = 6;
-    let currentIndex = 0;
-    list.forEach((key, index) => {
-      if (currentSize === 0) {
-        this.technologiesImages.push([]);
-      }
-      this.technologiesImages[currentIndex].push(TECHNOLOGY_IMAGES[key]);
-      currentSize++;
-      if (currentSize === maxSize || index === list.length - 1) {
-        currentIndex++;
-        currentSize = 0;
-      }
-    }); 
+    this.firebaseService.getAllFromCollection(FirebaseCollections.technologies).subscribe((list: TechnologyItems[]) => {
+      let currentSize = 0;
+      const maxSize = 6;
+      let currentIndex = 0;
+      list.forEach((item, index) => {
+        if (currentSize === 0) {
+          this.technologiesImages.push([]);
+        }
+        this.technologiesImages[currentIndex].push(item);
+        currentSize++;
+        if (currentSize === maxSize || index === list.length - 1) {
+          currentIndex++;
+          currentSize = 0;
+        }
+      });
+    })
   }
 }

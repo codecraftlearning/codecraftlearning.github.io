@@ -26,6 +26,9 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input()
   public labelKey: string = '';
 
+  @Input()
+  public valueKey: string = '';
+
   public isOpen: boolean = false;
 
   public selectedItems: any[] = [];
@@ -53,11 +56,18 @@ export class DropdownComponent implements ControlValueAccessor {
     return item;
   }
 
+  public getValue(item: any): string {
+    if (this.valueKey) {
+      return item[this.valueKey];
+    }
+    return item;
+  }
+
   public isSelected(item: any): boolean {
     if (this.multiselect) {
-      return this.selectedItems.includes(item);
+      return this.selectedItems.includes(this.getValue(item));
     }
-    return this.selectedItems[0] === item;
+    return this.selectedItems[0] === this.getValue(item);
   }
 
   public getPlaceholder(): string {
@@ -72,11 +82,11 @@ export class DropdownComponent implements ControlValueAccessor {
   }
 
   public selectItem(item: any): void {
-    const index = this.selectedItems.indexOf(item);
+    const index = this.selectedItems.indexOf(this.getValue(item));
     if (index > -1) {
       this.selectedItems.splice(index, 1);
     } else {
-      this.selectedItems.push(item);
+      this.selectedItems.push(this.getValue(item));
     }
     if (!this.multiselect) {
       this.isOpen = false;
