@@ -24,6 +24,7 @@ export enum FirebaseCollections {
     certificates = 'certificates',
     batches = 'batches',
     configurations = 'configurations',
+    technologies = 'technologies',
 }
 
 export enum Gender {

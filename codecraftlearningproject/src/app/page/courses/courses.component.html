@@ -16,7 +16,7 @@
         class="grid sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4"
         aria-label="Available Course Packages">
         <div *ngFor="let package of coursePackages" class="flex justify-center w-full">
-            <app-course-package [coursePackage]="package" (courseSelected)="packageSelected($event)"
+            <app-course-package [coursePackage]="package" (courseSelected)="packageSelected($event)" [icons]="availableTechnologies"
                 class="w-full"></app-course-package>
         </div>
     </section>
@@ -121,7 +121,7 @@
                                 class="text-base font-poppins font-medium text-white w-2/3">Technologies from the
                                 list</label>
                             <div class="flex flex-col w-full">
-                                <app-dropdown [items]="availableTechnologies" [multiselect]="true" class="w-full"
+                                <app-dropdown [items]="availableTechnologies" [multiselect]="true" labelKey="name" valueKey="name" class="w-full"
                                     formControlName="technologies"></app-dropdown>
                             </div>
                         </div>
