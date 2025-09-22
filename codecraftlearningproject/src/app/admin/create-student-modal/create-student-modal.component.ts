@@ -35,7 +35,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       this.studentForm.updateValueAndValidity();
     }
   };
-
+  public sendingEmail: boolean = false;
   public isEditMode: boolean = false;
   public courseList: CoursePackage[] = []
   public courseStatusList = Object.values(CourseStatus);
@@ -119,7 +119,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       completionDate: [course?.completionDate || null, this.completionAfterEnrollmentValidator],
       technology: [course?.technology || [], Validators.required],
       price: [course?.price || 0, [Validators.required, Validators.min(0)]],
-      instructor: [course?.instructor || '', Validators.required],
+      instructor: [course?.instructor || ''],
       status: [course?.status || CourseStatus.notStarted, Validators.required],
       certification: this.fb.group({
         certificationType: [course?.certification?.certificationType || ''],
@@ -232,7 +232,6 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       });
       const sub = from(Promise.all(studentSubs)).subscribe({
         next: () => {
-          this.sendOnboardingEmail();
           this.closeModal();
           this.creatingStudent = false;
           window.alert('Student created successfully!');
@@ -273,7 +272,6 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       this.creatingStudent = true;
       const sub = from(this.firebaseService.updateData(FirebaseCollections.students, studentId, studentData)).subscribe({
         next: () => {
-          this.closeModal();
           this.creatingStudent = false;
           window.alert('Student updated successfully!');
           this.updateStudentLog(studentData);
@@ -412,6 +410,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
   }
 
   public sendOnboardingEmail(): void {
+    this.sendingEmail = true;
     const student = this.studentForm.value;
     student.course = student.course[0];
 
@@ -436,6 +435,7 @@ export class CreateStudentModalComponent implements OnInit, OnDestroy {
       onboardingEmailData as any,
       this.configuration.email.publicKey
     ).then(() => {
+      this.sendingEmail = false;
       window.alert('Onboarding email sent successfully.');
     });
   }

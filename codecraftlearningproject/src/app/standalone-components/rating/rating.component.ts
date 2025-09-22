@@ -21,7 +21,7 @@ export class RatingComponent implements OnInit {
 
   private createRatingArray(): void {
     if (this.rating) {
-      this.ratingArray = Array.from({ length: this.maxRating }, (_, index) => index >= (this.rating ?? 0)).reverse();
+      this.ratingArray = Array.from({ length: this.maxRating }, (_, index) => index >= (this.rating ?? 0));
     }
   }
 }

@@ -7,7 +7,12 @@
                     <h5 class="modal-title" *ngIf="isEditMode">Update Student - {{studentForm.get('id')?.value}}</h5>
                     <button class="button-accent-sm" *ngIf="isReadyToCertify" (click)="certifyStudent()">Verified and
                         Certify</button>
-                    <button class="button-accent-sm" *ngIf="showKycButton" (click)="sendOnboardingEmail()">Send Onboarding Email</button>
+                    <button class="button-accent-sm" *ngIf="showKycButton && !sendingEmail" (click)="sendOnboardingEmail()">
+                        Send Onboarding Email
+                    </button>
+                    <button class="button-accent-sm disabled" *ngIf="showKycButton && sendingEmail">
+                        Sending Onboarding Email ...
+                    </button>
                 </div>
                 <button type="button" class="close" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
